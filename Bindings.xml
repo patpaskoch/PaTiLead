@@ -1,0 +1,5 @@
+<Bindings>
+    <Binding name="PATIGROUP_TOGGLE" header="PATIGROUP" category="BINDING_HEADER_PATIGROUP">
+        PaTiGroup_Toggle()
+    </Binding>
+</Bindings>
