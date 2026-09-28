@@ -12,7 +12,9 @@ Du wählst selbst ein Ziel und klickst einen Marker – PaTiGroup markiert, bele
 - Menü `•••`: Einstellungen, Sperren, Testmodus, Ausblenden; Position, Größe und Sprache werden gespeichert
 
 ## Tastenbelegung
-Spielmenü → Tastaturbelegung → **PaTiGroup**: jeder Marker, „Entfernen“ und „Ein-/Ausblenden“.
+ESC > Tastaturbelegung > **PaTiGroup** (je nach Client: ESC > Optionen > Tastaturbelegung; der genaue Pfad im
+Forever-Client ist noch nicht bestätigt): jeder Marker, „Entfernen“ und „Ein-/Ausblenden“. Die Einstellungen zeigen
+diesen Weg in einem eigenen, hervorgehobenen Abschnitt „Tastenbelegung“.
 PaTiGroup vergibt **keine** Taste von selbst. Bis Version 0.4 wurde Strg + Linksklick automatisch auf den
 Totenkopf gelegt, falls frei – eine solche vorhandene Belegung funktioniert weiter und lässt sich dort ändern.
 

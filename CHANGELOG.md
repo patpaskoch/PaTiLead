@@ -9,6 +9,8 @@ History before this file: `git log`.
 - Current target with its marker, group leader/assists and role counts; local note.
 - Settings modal (pull buttons, group info, note, lock, language, scale), test mode, saved position (PaTiGroupDB).
 - Key bindings for every marker, Clear and Show/Hide in WoW's key binding menu.
+- Settings: own "Key bindings" section with a highlighted help note ("ESC > Key Bindings > PaTiGroup", fallback
+  path via Options) instead of the small grey hint line.
 - `/pg settings, test, lock, unlock, reset, debug, version, about, changelog`; English texts, German translation.
 ### Changed
 - New PaTiShared look: header with ••• menu instead of the close button, flat buttons.

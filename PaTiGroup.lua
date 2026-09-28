@@ -112,6 +112,9 @@ local function buildSettings()
             if not InCombatLockdown() then window:SetScale(scale) else layoutPending = true end
         end,
     }))
+    -- Key bindings live in the WoW key binding menu (Bindings.xml); PaTiGroup never binds a key itself.
+    modal:AddSection("KEYBIND_SECTION")
+    modal:AddNote("KEYBIND_TITLE", "KEYBIND_PATH", "KEYBIND_TEXT", 4)
     modal:AddSection("MARKERS")
     for slot = 1, Logic.SLOTS do
         modal:AddRow(function() return L.SLOT:format(slot) end, UI.CreateDropdown(modal, 170, {
@@ -124,7 +127,6 @@ local function buildSettings()
             end,
         }))
     end
-    modal:AddLabel("BINDINGS_HINT")
     modal:Finish(function()
         Logic.RestoreDefaults(DB)
         UI.SetLanguage(DB.language)
