@@ -16,6 +16,8 @@ History before this file: `git log`.
 ### Fixed
 - Target marker, names, roles and leader/assist flags are checked for restricted (secret) values before they
   are compared or tested; unreadable values show as "no marker" / "no role".
+- Leader/assist detection also accepts the value 1 that older client APIs return (the secret-value fix above
+  briefly required exactly true).
 ### Removed
 - Automatic binding of Ctrl + Left click to Quick Skull on login (an existing binding keeps working), SaveBindings on login,
   and the removal of an ALT-G binding on login.

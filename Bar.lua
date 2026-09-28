@@ -84,8 +84,8 @@ targetName:SetWordWrap(false)
 -- Actions. Ready check and pull use plain API calls (not protected), leader/assist only.
 local function canStartGroupAction()
     if InCombatLockdown() or not IsInGroup or not IsInGroup() then return false end
-    return Logic.Readable(UnitIsGroupLeader("player"), isSecret) == true
-        or Logic.Readable(UnitIsGroupAssistant("player"), isSecret) == true
+    return Logic.Flag(UnitIsGroupLeader("player"), isSecret)
+        or Logic.Flag(UnitIsGroupAssistant("player"), isSecret)
 end
 Bar.readyCheck = UI.CreateButton(window, "READY_CHECK", nil, function()
     if canStartGroupAction() and DoReadyCheck then pcall(DoReadyCheck) end
@@ -227,9 +227,9 @@ local function paintGroup(testMode)
     for _, unit in ipairs(units) do
         -- Every value is checked for readability before it is tested or compared (secret-value rule).
         local name = Logic.Readable(UnitName(unit), isSecret)
-        if Logic.Readable(UnitIsGroupLeader(unit), isSecret) == true then
+        if Logic.Flag(UnitIsGroupLeader(unit), isSecret) then
             leader = name or leader
-        elseif name and IsInRaid() and Logic.Readable(UnitIsGroupAssistant(unit), isSecret) == true then
+        elseif name and IsInRaid() and Logic.Flag(UnitIsGroupAssistant(unit), isSecret) then
             assists[#assists + 1] = name
         end
         roles[#roles + 1] = Logic.Role(UnitGroupRolesAssigned and UnitGroupRolesAssigned(unit), isSecret)

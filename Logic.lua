@@ -93,6 +93,12 @@ function Logic.Readable(value, isSecret)
     return value
 end
 
+-- A yes/no API flag: true for true or 1 (older client APIs return 1/nil), false for anything else or secret.
+function Logic.Flag(value, isSecret)
+    if isSecret(value) then return false end
+    return value == true or value == 1
+end
+
 -- A raid target index 1-8, or nil (no marker, unreadable or unexpected).
 function Logic.MarkerIndex(value, isSecret)
     local marker = Logic.Readable(value, isSecret)

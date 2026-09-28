@@ -99,3 +99,16 @@ describe("Secret-value order (readable check before any comparison)", function()
         assert.equal("NONE", Logic.Role("SOMETHING", isSecret))
     end)
 end)
+
+describe("Logic.Flag", function()
+    it("accepts true and 1 (older APIs) and rejects nil, false and secrets (regression: 1 counted as no)", function()
+        local Logic = load()
+        local secret = {}
+        local isSecret = function(value) return rawequal(value, secret) end
+        assert.is_true(Logic.Flag(true, isSecret))
+        assert.is_true(Logic.Flag(1, isSecret))
+        assert.is_false(Logic.Flag(nil, isSecret))
+        assert.is_false(Logic.Flag(false, isSecret))
+        assert.is_false(Logic.Flag(secret, isSecret))
+    end)
+end)
