@@ -13,6 +13,9 @@ History before this file: `git log`.
 ### Changed
 - New PaTiShared look: header with ••• menu instead of the close button, flat buttons.
 - Reset All runs the /tm commands as secure macrotext; the character macro PaTiG_Reset is no longer created or edited.
+### Fixed
+- Target marker, names, roles and leader/assist flags are checked for restricted (secret) values before they
+  are compared or tested; unreadable values show as "no marker" / "no role".
 ### Removed
 - Automatic binding of Ctrl + Left click to Quick Skull on login (an existing binding keeps working), SaveBindings on login,
   and the removal of an ALT-G binding on login.

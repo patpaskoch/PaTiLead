@@ -12,6 +12,8 @@ local function say(key, ...)
     print("|cff68caffPaTiGroup:|r " .. L[key]:format(...))
 end
 
+local function isSecret(value) return issecretvalue ~= nil and issecretvalue(value) == true end
+
 local function addonVersion()
     local getMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
     return getMetadata and getMetadata(addonName, "Version") or "?"
@@ -148,7 +150,8 @@ local function printDebug()
             tostring(interface), GetLocale(), UI.GetLanguage()),
         ("Group %s · leader %s · assist %s · combat %s · test mode %s · layout pending %s"):format(
             (IsInRaid and IsInRaid()) and "raid" or ((IsInGroup and IsInGroup()) and "party" or "solo"),
-            tostring(UnitIsGroupLeader("player")), tostring(UnitIsGroupAssistant("player")),
+            tostring(Logic.Readable(UnitIsGroupLeader("player"), isSecret)),
+            tostring(Logic.Readable(UnitIsGroupAssistant("player"), isSecret)),
             InCombatLockdown() and "yes" or "no", testMode and "on" or "off", layoutPending and "yes" or "no"),
         ("Markers on bar: %s · key bindings: %s"):format(table.concat(Logic.VisibleMarkers(DB.markers), ","),
             #keys > 0 and table.concat(keys, ", ") or "none"),

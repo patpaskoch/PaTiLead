@@ -84,6 +84,29 @@ function Logic.CleanNote(text)
     return text:sub(1, Logic.NOTE_MAX)
 end
 
+-- Secret-value rule (AGENTS.md §8): check readability FIRST, compare or test only afterwards.
+-- isSecret is injected (issecretvalue in WoW), so these stay pure and testable.
+
+-- The value, or nil if it is secret.
+function Logic.Readable(value, isSecret)
+    if isSecret(value) then return nil end
+    return value
+end
+
+-- A raid target index 1-8, or nil (no marker, unreadable or unexpected).
+function Logic.MarkerIndex(value, isSecret)
+    local marker = Logic.Readable(value, isSecret)
+    if type(marker) == "number" and marker >= 1 and marker <= 8 then return marker end
+    return nil
+end
+
+-- "TANK" | "HEALER" | "DAMAGER", or "NONE" for no, unreadable or unknown role.
+function Logic.Role(value, isSecret)
+    local role = Logic.Readable(value, isSecret)
+    if role == "TANK" or role == "HEALER" or role == "DAMAGER" then return role end
+    return "NONE"
+end
+
 -- roles: list of "TANK" | "HEALER" | "DAMAGER" | "NONE" → counts.
 function Logic.CountRoles(roles)
     local counts = { TANK = 0, HEALER = 0, DAMAGER = 0, NONE = 0 }

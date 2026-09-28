@@ -67,3 +67,35 @@ describe("Logic helpers", function()
         assert.same({ TANK = 1, HEALER = 1, DAMAGER = 2, NONE = 1 }, counts)
     end)
 end)
+
+describe("Secret-value order (readable check before any comparison)", function()
+    -- A stand-in secret: ordering, arithmetic and concatenation raise an error. (Lua 5.1 cannot trap `== nil`,
+    -- so the check-first order itself is guaranteed by the code, not proven by these tests.)
+    local function trap() error("secret value was compared or used") end
+    local secret = setmetatable({}, { __eq = trap, __lt = trap, __le = trap, __add = trap, __concat = trap })
+    local isSecret = function(value) return rawequal(value, secret) end
+
+    it("Readable returns nil for a secret and the value otherwise", function()
+        local Logic = load()
+        assert.is_nil(Logic.Readable(secret, isSecret))
+        assert.is_true(Logic.Readable(true, isSecret))
+        assert.is_false(Logic.Readable(false, isSecret))
+    end)
+
+    it("MarkerIndex returns nil for a secret marker without using it", function()
+        local Logic = load()
+        assert.is_nil(Logic.MarkerIndex(secret, isSecret))
+        assert.equal(8, Logic.MarkerIndex(8, isSecret))
+        assert.is_nil(Logic.MarkerIndex(0, isSecret))
+        assert.is_nil(Logic.MarkerIndex(nil, isSecret))
+        assert.is_nil(Logic.MarkerIndex(9, isSecret))
+    end)
+
+    it("Role treats a secret or unknown role as NONE", function()
+        local Logic = load()
+        assert.equal("NONE", Logic.Role(secret, isSecret))
+        assert.equal("TANK", Logic.Role("TANK", isSecret))
+        assert.equal("NONE", Logic.Role(nil, isSecret))
+        assert.equal("NONE", Logic.Role("SOMETHING", isSecret))
+    end)
+end)

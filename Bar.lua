@@ -84,7 +84,8 @@ targetName:SetWordWrap(false)
 -- Actions. Ready check and pull use plain API calls (not protected), leader/assist only.
 local function canStartGroupAction()
     if InCombatLockdown() or not IsInGroup or not IsInGroup() then return false end
-    return UnitIsGroupLeader("player") or UnitIsGroupAssistant("player")
+    return Logic.Readable(UnitIsGroupLeader("player"), isSecret) == true
+        or Logic.Readable(UnitIsGroupAssistant("player"), isSecret) == true
 end
 Bar.readyCheck = UI.CreateButton(window, "READY_CHECK", nil, function()
     if canStartGroupAction() and DoReadyCheck then pcall(DoReadyCheck) end
@@ -224,12 +225,14 @@ local function paintGroup(testMode)
     end
     local leader, assists, roles = nil, {}, {}
     for _, unit in ipairs(units) do
-        local name = UnitName(unit)
-        local readable = name and not isSecret(name)
-        if UnitIsGroupLeader(unit) then leader = readable and name or leader
-        elseif IsInRaid() and UnitIsGroupAssistant(unit) and readable then assists[#assists + 1] = name end
-        local role = UnitGroupRolesAssigned and UnitGroupRolesAssigned(unit)
-        roles[#roles + 1] = (role and not isSecret(role)) and role or "NONE"
+        -- Every value is checked for readability before it is tested or compared (secret-value rule).
+        local name = Logic.Readable(UnitName(unit), isSecret)
+        if Logic.Readable(UnitIsGroupLeader(unit), isSecret) == true then
+            leader = name or leader
+        elseif name and IsInRaid() and Logic.Readable(UnitIsGroupAssistant(unit), isSecret) == true then
+            assists[#assists + 1] = name
+        end
+        roles[#roles + 1] = Logic.Role(UnitGroupRolesAssigned and UnitGroupRolesAssigned(unit), isSecret)
     end
     local text = L.LEADER .. " " .. (leader or "?")
     if #assists > 0 then text = text .. "  ·  " .. L.ASSISTS .. " " .. table.concat(assists, ", ") end
@@ -251,9 +254,9 @@ function Bar.Paint(testMode)
     else
         targetName:SetText(L.NO_TARGET)
     end
-    local hasMarker = marker ~= nil and not isSecret(marker) and marker > 0
-    targetIcon:SetTexture(hasMarker and Bar.MarkerTexture(marker) or nil)
-    targetIcon:SetShown(hasMarker)
+    marker = Logic.MarkerIndex(marker, isSecret) -- readability first, then range check
+    targetIcon:SetTexture(marker and Bar.MarkerTexture(marker) or nil)
+    targetIcon:SetShown(marker ~= nil)
     paintGroup(testMode)
     local canStart = canStartGroupAction() and not testMode
     Bar.readyCheck:SetEnabled(canStart and DoReadyCheck ~= nil)
