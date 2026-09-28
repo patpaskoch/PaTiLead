@@ -1,258 +1,226 @@
--- PaTiGroup: the player chooses a target and explicitly clicks a marker.
-local bar = CreateFrame("Frame", "PaTiGroupMarkerBar", UIParent, "BackdropTemplate")
-bar:SetSize(240, 152)
-bar:SetPoint("CENTER", UIParent, "CENTER", 0, -170)
-bar:SetMovable(true)
-bar:EnableMouse(true)
-bar:RegisterForDrag("LeftButton")
-bar:SetScript("OnDragStart", function(self)
-    if not InCombatLockdown() then
-        self:StartMoving()
-    end
-end)
-bar:SetScript("OnDragStop", bar.StopMovingOrSizing)
+-- PaTiGroup: raid markers, ready check and pull timer. The player chooses a target and clicks a marker;
+-- nothing is marked, bound or created automatically.
+local addonName, ns = ...
+local UI, L, Logic, Bar = ns.UI, ns.UI.L, ns.Logic, ns.Bar
 
-bar:SetBackdrop({
-    bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
-    edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-    tile = true,
-    tileSize = 16,
-    edgeSize = 14,
-    insets = { left = 3, right = 3, top = 3, bottom = 3 },
-})
-bar:SetBackdropColor(0.12, 0.10, 0.08, 0.95)
-bar:SetBackdropBorderColor(0.65, 0.58, 0.42, 1)
+local DB
+local testMode = false
+local layoutPending = false
+local window = Bar.window
 
-local title = bar:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-title:SetPoint("TOPLEFT", bar, "TOPLEFT", 16, -11)
-title:SetText("PaTiGroup")
+local function say(key, ...)
+    print("|cff68caffPaTiGroup:|r " .. L[key]:format(...))
+end
+
+local function addonVersion()
+    local getMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
+    return getMetadata and getMetadata(addonName, "Version") or "?"
+end
+
+-- Layout touches secure buttons: out of combat, otherwise after PLAYER_REGEN_ENABLED.
+local function relayout()
+    if not DB then return end
+    layoutPending = not Bar.Layout(DB, testMode)
+    Bar.Paint(testMode)
+end
+
+Bar.onNoteChanged = function(text) if DB then DB.note = text end end
+
+-- Key bindings (Bindings.xml): names shown in WoW's key binding menu. Nothing is bound automatically.
+local G = _G
+G.BINDING_HEADER_PATIGROUP = "PaTiGroup"
+G.BINDING_NAME_PATIGROUP_TOGGLE = L.TOGGLE
+for marker = 1, 8 do
+    local name = marker == 8 and "PaTiGroupQuickSkull" or "PaTiGroupBindMarker" .. marker
+    G["BINDING_NAME_CLICK " .. name .. ":LeftButton"] = Bar.MarkerName(marker)
+end
+G["BINDING_NAME_CLICK PaTiGroupBindClear:LeftButton"] = L.CLEAR
+
+-- Actions --------------------------------------------------------------------------------------
+
+local function combatBlocked()
+    if InCombatLockdown() then say("COMBAT_LOCKED"); return true end
+    return false
+end
 
 local function setVisible(visible)
-    if InCombatLockdown() then
-        print("|cff68caffPaTiGroup:|r Die Leiste kann im Kampf nicht ein- oder ausgeblendet werden.")
-        return
-    end
-    if visible then
-        bar:Show()
-    else
-        bar:Hide()
-    end
+    if combatBlocked() then return end
+    window:SetShown(visible)
+    if not visible then say("HIDDEN_HINT") end
 end
 
-local close = CreateFrame("Button", nil, bar, "UIPanelCloseButton")
-close:SetSize(24, 24)
-close:SetPoint("TOPRIGHT", bar, "TOPRIGHT", -2, -2)
-close:SetScript("OnClick", function()
-    setVisible(false)
-end)
+function PaTiGroup_Toggle() -- global: used by the PATIGROUP_TOGGLE key binding
+    setVisible(not window:IsShown())
+end
 
-local markers = {
-    { index = 8, name = "Totenkopf" },
-    { index = 7, name = "Kreuz" },
-    { index = 5, name = "Mond" },
-    { index = 6, name = "Quadrat" },
+local function toggleTestMode()
+    if combatBlocked() then return end
+    testMode = not testMode
+    relayout()
+end
+
+local function resetPosition()
+    if combatBlocked() then return end
+    DB.point, DB.relativePoint, DB.x, DB.y = nil, nil, nil, nil
+    window:Attach(DB, 0, -170)
+end
+
+-- Settings -------------------------------------------------------------------------------------
+
+local modal
+
+local function markerItems()
+    local items = { { value = 0, text = "NO_MARKER" } }
+    for marker = 8, 1, -1 do
+        items[#items + 1] = { value = marker, text = function() return Bar.MarkerName(marker) end, icon = Bar.MarkerTexture(marker) }
+    end
+    return items
+end
+
+local function buildSettings()
+    modal = UI.CreateModal("PaTiGroupSettings", function() return "PaTiGroup " .. L.SETTINGS end, 400)
+    local function box(label, key)
+        return UI.CreateCheckbox(modal, label, {
+            get = function() return DB[key] end,
+            set = function(value) DB[key] = value; relayout() end,
+        })
+    end
+    modal:AddSection("GENERAL")
+    modal:AddControls(box("SHOW_PULL", "showPull"), box("SHOW_GROUP_INFO", "showGroupInfo"))
+    modal:AddControls(box("SHOW_NOTE", "showNote"), UI.CreateCheckbox(modal, "LOCK_WINDOW", {
+        get = function() return window:IsLocked() end,
+        set = function(locked) window:SetLocked(locked) end,
+    }))
+    modal:AddRow("LANGUAGE", UI.CreateLanguageDropdown(modal, DB, 170))
+    local scales = {}
+    for _, scale in ipairs(Logic.SCALES) do
+        scales[#scales + 1] = { value = scale, text = function() return ("%d %%"):format(scale * 100 + 0.5) end }
+    end
+    modal:AddRow("SCALE", UI.CreateDropdown(modal, 170, {
+        items = function() return scales end,
+        get = function() return DB.scale end,
+        set = function(scale)
+            DB.scale = scale
+            if not InCombatLockdown() then window:SetScale(scale) else layoutPending = true end
+        end,
+    }))
+    modal:AddSection("MARKERS")
+    for slot = 1, Logic.SLOTS do
+        modal:AddRow(function() return L.SLOT:format(slot) end, UI.CreateDropdown(modal, 170, {
+            items = markerItems,
+            get = function() return DB.markers[slot] end,
+            set = function(marker)
+                Logic.SetSlot(DB.markers, slot, marker)
+                modal:Refresh() -- another slot may have changed (marker moved)
+                relayout()
+            end,
+        }))
+    end
+    modal:AddLabel("BINDINGS_HINT")
+    modal:Finish(function()
+        Logic.RestoreDefaults(DB)
+        UI.SetLanguage(DB.language)
+        window:SetLocked(DB.locked)
+        if not InCombatLockdown() then window:SetScale(DB.scale) end
+        relayout()
+    end)
+end
+
+local function openSettings()
+    if not modal then buildSettings() end
+    modal:Show()
+end
+
+-- Commands -------------------------------------------------------------------------------------
+
+local function printDebug()
+    local version, build, _, interface = GetBuildInfo()
+    local keys = {}
+    for _, button in ipairs(Bar.bindingButtons) do
+        local key = GetBindingKey and GetBindingKey("CLICK " .. button:GetName() .. ":LeftButton")
+        if key then keys[#keys + 1] = key .. "=" .. button:GetName() end
+    end
+    local oldMacro = GetMacroIndexByName and GetMacroIndexByName("PaTiG_Reset") or 0
+    print("|cff68caffPaTiGroup Debug:|r")
+    for _, line in ipairs({
+        ("Addon %s %s · PaTiShared UI %s"):format(addonName, addonVersion(), tostring(UI.VERSION)),
+        ("WoW %s (build %s, interface %s) · locale %s · UI language %s"):format(tostring(version), tostring(build),
+            tostring(interface), GetLocale(), UI.GetLanguage()),
+        ("Group %s · leader %s · assist %s · combat %s · test mode %s · layout pending %s"):format(
+            (IsInRaid and IsInRaid()) and "raid" or ((IsInGroup and IsInGroup()) and "party" or "solo"),
+            tostring(UnitIsGroupLeader("player")), tostring(UnitIsGroupAssistant("player")),
+            InCombatLockdown() and "yes" or "no", testMode and "on" or "off", layoutPending and "yes" or "no"),
+        ("Markers on bar: %s · key bindings: %s"):format(table.concat(Logic.VisibleMarkers(DB.markers), ","),
+            #keys > 0 and table.concat(keys, ", ") or "none"),
+        ("Old macro PaTiG_Reset: %s"):format(oldMacro > 0 and "present, unused since 0.5 (you may delete it)" or "not present"),
+    }) do print("  " .. line) end
+end
+
+local COMMANDS = {
+    [""] = PaTiGroup_Toggle, toggle = PaTiGroup_Toggle,
+    show = function() setVisible(true) end, an = function() setVisible(true) end,
+    hide = function() setVisible(false) end, aus = function() setVisible(false) end,
+    test = toggleTestMode,
+    lock = function() window:SetLocked(true) end,
+    unlock = function() window:SetLocked(false) end,
+    reset = resetPosition,
+    settings = openSettings,
+    debug = printDebug,
+    version = function() say("VERSION", addonVersion()) end,
+    about = function() say("ABOUT", addonVersion()) end,
+    changelog = function() print("|cff68caffPaTiGroup " .. addonVersion() .. ":|r " .. L.CHANGELOG_TEXT) end,
 }
-
-for position, marker in ipairs(markers) do
-    -- SetRaidTarget is protected in this client. A secure click performs the
-    -- fixed action; addon Lua must not call SetRaidTarget from OnClick.
-    local button = CreateFrame("Button", nil, bar, "SecureActionButtonTemplate")
-    button:SetSize(48, 48)
-    button:SetPoint("TOPLEFT", bar, "TOPLEFT", 15 + (position - 1) * 53, -34)
-    button:RegisterForClicks("AnyUp", "AnyDown")
-    button:SetAttribute("type", "raidtarget")
-    button:SetAttribute("unit", "target")
-    button:SetAttribute("marker", marker.index)
-    button:SetAttribute("action", "set")
-
-    -- Use WoW's normal action-button ring rather than a flat square texture.
-    -- The 22px icon leaves 13px of visible padding on every side.
-    button:SetNormalTexture("Interface\\Buttons\\UI-Quickslot2")
-    button:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD")
-    button:SetPushedTexture("Interface\\Buttons\\UI-Quickslot-Depress")
-
-    local icon = button:CreateTexture(nil, "ARTWORK")
-    icon:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcons")
-    -- The icon deliberately remains smaller than its action-button frame.
-    -- This makes the gold ring visible on all four sides.
-    icon:SetSize(22, 22)
-    icon:SetPoint("CENTER")
-    local zeroBasedIndex = marker.index - 1
-    local left = (zeroBasedIndex % 4) / 4
-    local top = math.floor(zeroBasedIndex / 4) / 4
-    icon:SetTexCoord(left, left + 0.25, top, top + 0.25)
-
-    button:SetScript("OnEnter", function(self)
-        GameTooltip:SetOwner(self, "ANCHOR_TOP")
-        GameTooltip:AddLine(marker.name)
-        GameTooltip:AddLine("Markiert dein aktuelles Ziel per Klick.", 1, 1, 1)
-        GameTooltip:Show()
-    end)
-    button:SetScript("OnLeave", function()
-        GameTooltip:Hide()
-    end)
-end
-
--- Ctrl + left mouse button marks the already selected target with a skull.
--- It is a fixed secure action; automatic marker cycling is not permitted.
-local quickSkull = CreateFrame("Button", "PaTiGroupQuickSkull", bar, "SecureActionButtonTemplate")
-quickSkull:SetSize(1, 1)
-quickSkull:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -1, 1)
-quickSkull:SetAlpha(0)
-quickSkull:RegisterForClicks("AnyUp", "AnyDown")
-quickSkull:SetAttribute("type", "raidtarget")
-quickSkull:SetAttribute("unit", "target")
-quickSkull:SetAttribute("marker", 8)
-quickSkull:SetAttribute("action", "set")
-
--- Reassigning each icon to the player releases it from its previous unit.
--- The final line clears the player's icon. /tm is a secure WoW macro command;
--- calling SetRaidTarget from addon Lua is blocked by this client.
-local resetMacroName = "PaTiG_Reset"
-local resetMacroLines = {}
-for index = 1, 8 do
-    resetMacroLines[#resetMacroLines + 1] = "/tm [@player] " .. index
-end
-resetMacroLines[#resetMacroLines + 1] = "/tm [@player] 0"
-local resetMacroBody = table.concat(resetMacroLines, "\n")
-
-local reset = CreateFrame("Button", nil, bar, "SecureActionButtonTemplate,UIPanelButtonTemplate")
-reset:SetSize(94, 24)
-reset:SetPoint("TOPLEFT", bar, "TOPLEFT", 128, -86)
-reset:SetText("Reset All")
-reset:RegisterForClicks("AnyUp", "AnyDown")
-reset:SetAttribute("type", "macro")
-reset:Disable()
-reset:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_TOP")
-    GameTooltip:AddLine("Alle Zielmarker entfernen")
-    GameTooltip:AddLine("Ein Klick entfernt die acht Zielmarker, auch von anderen Zielen.", 1, 1, 1)
-    GameTooltip:Show()
-end)
-
-local ready = CreateFrame("Button", nil, bar, "UIPanelButtonTemplate")
-ready:SetSize(104, 24)
-ready:SetPoint("TOPLEFT", bar, "TOPLEFT", 14, -86)
-ready:SetText("Ready Check")
-ready:SetScript("OnClick", function()
-    if InCombatLockdown() or not DoReadyCheck then
-        return
-    end
-    pcall(DoReadyCheck)
-end)
-ready:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_TOP")
-    GameTooltip:AddLine("Ready Check")
-    GameTooltip:AddLine("Startet WoWs normalen Bereitschaftscheck.", 1, 1, 1)
-    GameTooltip:Show()
-end)
-ready:SetScript("OnLeave", function()
-    GameTooltip:Hide()
-end)
-
-local function canStartGroupAction()
-    if InCombatLockdown() or not IsInGroup or not IsInGroup() then
-        return false
-    end
-    return UnitIsGroupLeader("player") or UnitIsGroupAssistant("player")
-end
-
-local pullButtons = {}
-local function startPull(seconds)
-    if not canStartGroupAction() or not C_PartyInfo or not C_PartyInfo.DoCountdown then
-        return
-    end
-    pcall(C_PartyInfo.DoCountdown, seconds)
-end
-
-for position, seconds in ipairs({ 3, 5, 10 }) do
-    local pull = CreateFrame("Button", nil, bar, "UIPanelButtonTemplate")
-    pull:SetSize(64, 24)
-    pull:SetPoint("TOPLEFT", bar, "TOPLEFT", 14 + (position - 1) * 72, -116)
-    pull:SetText("Pull " .. seconds)
-    pull:SetScript("OnClick", function()
-        startPull(seconds)
-    end)
-    pull:SetScript("OnEnter", function(self)
-        GameTooltip:SetOwner(self, "ANCHOR_TOP")
-        GameTooltip:AddLine("Pull " .. seconds)
-        GameTooltip:AddLine("Startet WoWs Gruppen-Countdown.", 1, 1, 1)
-        GameTooltip:Show()
-    end)
-    pull:SetScript("OnLeave", function()
-        GameTooltip:Hide()
-    end)
-    pullButtons[#pullButtons + 1] = pull
-end
-
-local function updateReadyCheck()
-    local canStart = canStartGroupAction()
-    ready:SetEnabled(canStart and DoReadyCheck ~= nil)
-    for _, pull in ipairs(pullButtons) do
-        pull:SetEnabled(canStart and C_PartyInfo and C_PartyInfo.DoCountdown ~= nil)
-    end
-end
-reset:SetScript("OnLeave", function()
-    GameTooltip:Hide()
-end)
-
-function PaTiGroup_Toggle()
-    setVisible(not bar:IsShown())
-end
 
 SLASH_PATIGROUP1 = "/patigroup"
 SLASH_PATIGROUP2 = "/pg"
 SLASH_PATIGROUP3 = "/ptg"
 SlashCmdList.PATIGROUP = function(message)
-    local command = (message or ""):match("^%s*(.-)%s*$"):lower()
-    if command == "show" or command == "an" then
-        setVisible(true)
-    elseif command == "hide" or command == "aus" then
-        setVisible(false)
-    elseif command == "" or command == "toggle" then
-        PaTiGroup_Toggle()
-    else
-        print("|cff68caffPaTiGroup:|r /patigroup show, /patigroup hide oder /patigroup toggle")
-    end
+    local command = COMMANDS[(message or ""):match("^%s*(.-)%s*$"):lower()]
+    if command and DB then command() else say("HELP") end
 end
 
-local bindingSetup = CreateFrame("Frame")
-bindingSetup:RegisterEvent("PLAYER_LOGIN")
-bindingSetup:RegisterEvent("GROUP_ROSTER_UPDATE")
-bindingSetup:RegisterEvent("PLAYER_REGEN_ENABLED")
-bindingSetup:SetScript("OnEvent", function(self, event)
-    if event == "PLAYER_LOGIN" then
-        local macroIndex = GetMacroIndexByName(resetMacroName)
-        if macroIndex == 0 then
-            macroIndex = CreateMacro(resetMacroName, "INV_MISC_QUESTIONMARK", resetMacroBody, true)
-        else
-            local _, _, existingBody = GetMacroInfo(macroIndex)
-            if existingBody ~= resetMacroBody then
-                EditMacro(macroIndex, nil, nil, resetMacroBody)
-            end
-        end
-        if macroIndex and macroIndex > 0 then
-            reset:SetAttribute("macro", macroIndex)
-            reset:Enable()
-        else
-            print("|cff68caffPaTiGroup:|r Reset braucht einen freien charakterspezifischen Makroplatz.")
-        end
-
-        if GetBindingAction("ALT-G") == "PATIGROUP_TOGGLE" then
-            SetBinding("ALT-G")
-        end
-        local currentAction = GetBindingAction("CTRL-BUTTON1")
-        if not currentAction or currentAction == "" then
-            SetBindingClick("CTRL-BUTTON1", "PaTiGroupQuickSkull")
-            print("|cff68caffPaTiGroup:|r Strg + Linksklick setzt Totenkopf auf dein aktuelles Ziel.")
-        elseif currentAction ~= "CLICK PaTiGroupQuickSkull:LeftButton" then
-            print("|cff68caffPaTiGroup:|r Strg + Linksklick ist bereits belegt; Schnellmarker wurde nicht gesetzt.")
-        end
-        SaveBindings(GetCurrentBindingSet())
-    end
-    updateReadyCheck()
+window:SetMenu(function()
+    if not DB then return {} end
+    local combat = InCombatLockdown()
+    local combatTip = combat and "COMBAT_LOCKED" or nil
+    return {
+        { text = "SETTINGS", onClick = openSettings },
+        { text = window:IsLocked() and "UNLOCK" or "LOCK", onClick = function() window:SetLocked(not window:IsLocked()) end },
+        { text = "TEST_MODE", checked = testMode, disabled = combat, tooltip = combatTip, onClick = toggleTestMode },
+        { text = "HIDE", disabled = combat, tooltip = combatTip, onClick = function() setVisible(false) end },
+    }
 end)
 
-local version, build, _, interfaceVersion = GetBuildInfo()
-print(string.format("|cff68caffPaTiGroup|r geladen (WoW %s, Build %s, Interface %s). /patigroup show zeigt die Leiste.", tostring(version), tostring(build), tostring(interfaceVersion)))
+-- Events ---------------------------------------------------------------------------------------
 
+local events = CreateFrame("Frame")
+for _, event in ipairs({ "PLAYER_LOGIN", "GROUP_ROSTER_UPDATE", "PLAYER_TARGET_CHANGED", "RAID_TARGET_UPDATE",
+    "PARTY_LEADER_CHANGED", "PLAYER_REGEN_ENABLED", "PLAYER_REGEN_DISABLED" }) do
+    events:RegisterEvent(event)
+end
+pcall(events.RegisterEvent, events, "PLAYER_ROLES_ASSIGNED") -- not in every client generation
+
+events:SetScript("OnEvent", function(_, event)
+    if event == "PLAYER_LOGIN" then
+        PaTiGroupDB = Logic.Migrate(PaTiGroupDB)
+        DB = PaTiGroupDB
+        UI.SetLanguage(DB.language)
+        window:Attach(DB, 0, -170)
+        if not InCombatLockdown() then window:SetScale(DB.scale) end -- /reload in combat: scale follows later
+        relayout()
+        local version = addonVersion()
+        if DB.lastChangelog ~= version then
+            if DB.lastChangelog then say("UPDATED", version) end
+            DB.lastChangelog = version
+        end
+        say("LOADED")
+    elseif not DB then
+        return
+    elseif event == "PLAYER_REGEN_ENABLED" and layoutPending then
+        window:SetScale(DB.scale)
+        relayout()
+    else
+        Bar.Paint(testMode) -- target, leader, roles, button states (combat-safe)
+    end
+end)
+UI.OnLanguageChanged(function() if DB then Bar.Paint(testMode) end end)

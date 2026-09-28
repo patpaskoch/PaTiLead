@@ -3,5 +3,11 @@
 ## Notes: Manuelle Zielmarkierungen und Gruppenwerkzeuge
 ## Author: PaTi
 ## Version: 0.4.0
+## SavedVariablesPerCharacter: PaTiGroupDB
 
+Shared\Shared.xml
+Locales\enUS.lua
+Locales\deDE.lua
+Logic.lua
+Bar.lua
 PaTiGroup.lua

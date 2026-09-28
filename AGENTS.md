@@ -1,15 +1,18 @@
 # AGENTS.md — PaTiGroup
 
-**Read the suite rules first: [`../../PaTiAdmin/AGENTS.md`](../../PaTiAdmin/AGENTS.md).** They apply here in full
-(independence, combat lockdown, no automation, localization, tests, Definition of Done, VALIDATION output).
+**Read the suite rules first: [`../../PaTiAdmin/AGENTS.md`](../../PaTiAdmin/AGENTS.md).** They apply here in full.
 Addon facts: `../../PaTiAdmin/docs/ARCHITECTURE.md` · open issues: `../../PaTiAdmin/docs/FOLLOW_UPS.md`.
 
 ## This addon
-- Purpose: manual raid markers, ready check and pull countdown for group leaders.
-- SavedVariables: none yet (position is not saved).
-- Secure / combat-sensitive: four marker buttons + `PaTiGroupQuickSkull` (SecureActionButtonTemplate, type raidtarget), reset button running the character macro `PaTiG_Reset`. `SetRaidTarget` is protected in this client — never call it from Lua.
-- Slash commands: `/pg`, `/ptg`, `/patigroup` — show|an, hide|aus, toggle. Binding `PATIGROUP_TOGGLE` (Bindings.xml).
-- Login side effects: creates/updates the macro, binds Ctrl+Left click only if unbound, calls SaveBindings (FOLLOW_UPS F8). Never overwrite a player's existing binding.
+- Purpose: raid markers, ready check, pull timer, group overview for leaders. The player picks the target and clicks.
+- Files: `Logic.lua` (settings, marker order, reset text — pure, tested) · `Bar.lua` (window, secure buttons, layout, paint) ·
+  `PaTiGroup.lua` (settings, commands, bindings names, events) · `Bindings.xml` · `Locales/` · `Shared/` (synced, never edit).
+- SavedVariables: `PaTiGroupDB` (per character), schema 1 — see `Logic.DEFAULTS`, `markers` = 8 slots (raid target index or 0), `note`.
+- Secure: `PaTiGroupMarker1..8`, `PaTiGroupClear` (type raidtarget, action set, marker 0 = clear), `PaTiGroupReset`
+  (type macro, macrotext /tm), binding buttons `PaTiGroupQuickSkull`, `PaTiGroupBindMarker1..7`, `PaTiGroupBindClear`
+  (keep these names: players' key bindings point at them). Layout/attributes only out of combat (`Bar.Layout`).
+- Never: call SetRaidTarget from Lua, bind keys, call SaveBindings, create or edit macros, mark automatically.
+- Slash: `/pg`, `/ptg`, `/patigroup`.
 
 ## Checks
 `bash ../../PaTiAdmin/tools/check.sh .` before every commit. Manual WoW tests: `../../PaTiAdmin/docs/TESTING.md`.

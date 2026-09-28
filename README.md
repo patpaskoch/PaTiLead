@@ -1,11 +1,25 @@
 # PaTiGroup
 
-Einfaches Addon fuer den installierten WoW Classic Beta Client 1.60.1.70009. Version 0.4.0 verwendet geschuetzte Klick-Buttons fuer Zielmarkierungen sowie WoWs Gruppen-Countdown.
+Zielmarker, Ready Check und Pull-Countdown für den WoW-Forever-Client (Interface 16001).
+Du wählst selbst ein Ziel und klickst einen Marker – PaTiGroup markiert, belegt und erstellt nichts automatisch.
 
-1. WoW starten oder `/reload` eingeben.
-2. Im Chat erscheint die PaTiGroup-Lademeldung mit der vom Spiel gemeldeten Interface-Version.
-3. Ein Ziel selbst auswaehlen und Totenkopf, Kreuz, Mond oder Quadrat anklicken.
-4. Das X schliesst die Leiste. `/patigroup show` zeigt sie wieder. `/pg` oder `/ptg` schaltet sie um. Am Titel kann sie verschoben werden.
+## Funktionen
+- Alle acht Zielmarker plus „Entfernen“; welche Marker in welcher Reihenfolge erscheinen, legst du in den Einstellungen fest
+- „Alle entfernen“ nimmt alle acht Marker von allen Zielen (führt `/tm`-Befehle direkt über einen geschützten Button aus)
+- Ready Check sowie Pull 3 / 5 / 10 für Gruppenleiter und Assistenten (Pull-Buttons abschaltbar)
+- Aktuelles Ziel mit seinem Marker, Gruppenleitung und Rollen (Tank / Heiler / Schaden)
+- Kurze Notiz, nur lokal auf diesem PC gespeichert
+- Menü `•••`: Einstellungen, Sperren, Testmodus, Ausblenden; Position, Größe und Sprache werden gespeichert
 
-Es gibt keine automatische Zielwahl und keine automatische Markierung. Ready Check sowie Pull 3, Pull 5 und Pull 10 sind fuer Gruppenleiter und Assistenten verfuegbar. Gruppennotizen sind fuer spaetere Versionen geplant. Die Fensterposition wird in diesem ersten Test noch nicht gespeichert. Im Kampf kann die Leiste nicht verschoben oder mit `/pg` umgeschaltet werden.
+## Tastenbelegung
+Spielmenü → Tastaturbelegung → **PaTiGroup**: jeder Marker, „Entfernen“ und „Ein-/Ausblenden“.
+PaTiGroup vergibt **keine** Taste von selbst. Bis Version 0.4 wurde Strg + Linksklick automatisch auf den
+Totenkopf gelegt, falls frei – eine solche vorhandene Belegung funktioniert weiter und lässt sich dort ändern.
 
+## Makro
+Bis Version 0.4 legte PaTiGroup das Charakter-Makro `PaTiG_Reset` an. Das ist nicht mehr nötig und wird weder
+erstellt noch verändert; ein vorhandenes Makro kannst du löschen (`/pg debug` zeigt, ob es noch existiert).
+
+## Befehle
+`/pg`, `/ptg`, `/patigroup` — ohne Zusatz ein-/ausblenden; `show`, `hide`, `test`, `lock`, `unlock`, `reset` (Position),
+`settings`, `debug`, `version`, `about`, `changelog`. Im Kampf lässt sich die Leiste nicht ein-/ausblenden oder umbauen.

@@ -1,5 +1,15 @@
 <Bindings>
+    <!-- Shown under "PaTiGroup" in WoW's key binding menu. PaTiGroup never binds a key by itself. -->
     <Binding name="PATIGROUP_TOGGLE" header="PATIGROUP" category="BINDING_HEADER_PATIGROUP">
         PaTiGroup_Toggle()
     </Binding>
+    <Binding name="CLICK PaTiGroupQuickSkull:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
+    <Binding name="CLICK PaTiGroupBindMarker7:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
+    <Binding name="CLICK PaTiGroupBindMarker6:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
+    <Binding name="CLICK PaTiGroupBindMarker5:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
+    <Binding name="CLICK PaTiGroupBindMarker4:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
+    <Binding name="CLICK PaTiGroupBindMarker3:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
+    <Binding name="CLICK PaTiGroupBindMarker2:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
+    <Binding name="CLICK PaTiGroupBindMarker1:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
+    <Binding name="CLICK PaTiGroupBindClear:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
 </Bindings>
