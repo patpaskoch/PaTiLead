@@ -140,6 +140,21 @@ Bar.note = note
 -- Out of combat only: order, visibility and size of everything (secure children make the bar protected).
 function Bar.Layout(db, testMode)
     if InCombatLockdown() then return false end
+    -- Collapsed: only the header stays. Everything else (incl. the secure marker buttons) is hidden out of combat.
+    local expanded = not db.collapsed
+    Bar.collapsed = db.collapsed
+    for _, region in ipairs({ targetLabel, targetName, clear, Bar.readyCheck, reset }) do region:SetShown(expanded) end
+    if not expanded then
+        targetIcon:Hide()
+        for _, button in pairs(Bar.markerButtons) do button:Hide() end
+        for _, pull in ipairs(Bar.pulls) do pull:Hide() end
+        leaderLine:Hide()
+        rolesLine:Hide()
+        note:Hide()
+        window:SetHeight(UI.Sizes.HeaderHeight)
+        window:SetTestMode(testMode)
+        return true
+    end
     local y = UI.Sizes.HeaderHeight + UI.Spacing.SM
     local function place(frame, x)
         frame:ClearAllPoints()
@@ -256,7 +271,7 @@ function Bar.Paint(testMode)
     end
     marker = Logic.MarkerIndex(marker, isSecret) -- readability first, then range check
     targetIcon:SetTexture(marker and Bar.MarkerTexture(marker) or nil)
-    targetIcon:SetShown(marker ~= nil)
+    targetIcon:SetShown(marker ~= nil and not Bar.collapsed)
     paintGroup(testMode)
     local canStart = canStartGroupAction() and not testMode
     Bar.readyCheck:SetEnabled(canStart and DoReadyCheck ~= nil)

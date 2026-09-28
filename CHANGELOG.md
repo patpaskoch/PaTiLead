@@ -13,6 +13,8 @@ History before this file: `git log`.
 ### Changed
 - New PaTiShared look: header with ••• menu instead of the close button, flat buttons.
 - Reset All runs the /tm commands as secure macrotext; the character macro PaTiG_Reset is no longer created or edited.
+- Collapse/Expand in the ••• menu: only the header stays; saved in PaTiGroupDB.collapsed (old saves: expanded).
+  Disabled in combat (the bar holds secure buttons). Restore Defaults expands the bar.
 ### Fixed
 - Target marker, names, roles and leader/assist flags are checked for restricted (secret) values before they
   are compared or tested; unreadable values show as "no marker" / "no role".

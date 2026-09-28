@@ -14,6 +14,7 @@ Logic.DEFAULT_MARKERS = { 8, 7, 5, 6, 4, 3, 2, 1 }
 
 Logic.DEFAULTS = {
     locked = false,
+    collapsed = false,
     scale = 1,
     language = "auto",
     showPull = true,
