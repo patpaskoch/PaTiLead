@@ -13,6 +13,8 @@ History before this file: `git log`.
   path via Options) instead of the small grey hint line.
 - `/pg settings, test, lock, unlock, reset, debug, version, about, changelog`; English texts, German translation.
 ### Changed
+- AddOns list description in English with a German translation (`## Notes-deDE`); README rewritten for players
+  (features, installation, first steps, commands, known limitations).
 - New PaTiShared look: header with ••• menu instead of the close button, flat buttons.
 - Reset All runs the /tm commands as secure macrotext; the character macro PaTiG_Reset is no longer created or edited.
 - Collapse/Expand in the ••• menu: only the header stays; saved in PaTiGroupDB.collapsed (old saves: expanded).
