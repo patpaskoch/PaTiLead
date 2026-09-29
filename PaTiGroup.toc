@@ -4,6 +4,7 @@
 ## Notes-deDE: Zielmarkierungen, Ready Check und Pull-Timer, mit Tastenbelegung
 ## Author: PaTi
 ## Version: 0.4.0
+## IconTexture: Interface\AddOns\PaTiGroup\Media\icon
 ## SavedVariablesPerCharacter: PaTiGroupDB
 
 Shared\Shared.xml
