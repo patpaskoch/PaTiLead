@@ -1,5 +1,7 @@
 # PaTiGroup
 
+<img src="assets/icon-128.png" width="96" alt="PaTiGroup icon">
+
 Raid target markers, ready check and pull timer for World of Warcraft: Forever (Interface 16001). You pick a target
 and click a marker — PaTiGroup never marks, binds keys or creates macros by itself.
 
@@ -33,8 +35,12 @@ changed there.
 - `/pg settings` → marker order; the "Key bindings" section shows where to bind keys
 - `/pg test` shows example data
 
+## Settings
+`/pg settings` or ••• → Settings: pull buttons, group info, note, window lock, language, scale, marker
+order, and the **Key bindings** note with the menu path.
+
 ## Commands
-`/pg`, `/ptg` or `/patigroup` — alone: show/hide · `settings` · `test` · `show` · `hide` · `lock` · `unlock` ·
+`/pg`, `/ptg` or `/patigroup` — alone or `toggle`: show/hide · `settings` · `test` · `show` · `hide` · `lock` · `unlock` ·
 `reset` (position) · `debug` · `version` · `about` · `changelog`
 
 The bar cannot be shown, hidden, collapsed or rearranged in combat (it has secure buttons).
@@ -43,3 +49,6 @@ The bar cannot be shown, hidden, collapsed or rearranged in combat (it has secur
 - Markers, Reset All and key bindings are not yet tested in game since the rework.
 - Up to version 0.4 PaTiGroup created the macro `PaTiG_Reset`. It is no longer used or changed; you may delete it
   (`/pg debug` shows whether it still exists).
+
+## License
+MIT — see [LICENSE](LICENSE). Copyright (c) 2026 Patrick Koch.

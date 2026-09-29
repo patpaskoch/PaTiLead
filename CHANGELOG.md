@@ -5,6 +5,8 @@ History before this file: `git log`.
 
 ## [Unreleased] — planned 0.5.0
 ### Added
+- AddOns list icon from the PaTiSuite icon set (`Media/icon.tga`, `## IconTexture`); platform images in `assets/`.
+- MIT license (`LICENSE`, not part of the release zip).
 - All eight raid markers plus Clear; marker choice and order in the settings.
 - Current target with its marker, group leader/assists and role counts; local note.
 - Settings modal (pull buttons, group info, note, lock, language, scale), test mode, saved position (PaTiGroupDB).
