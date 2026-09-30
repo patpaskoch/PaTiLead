@@ -14,7 +14,6 @@ Logic.DEFAULT_MARKERS = { 8, 7, 5, 6, 4, 3, 2, 1 }
 
 Logic.DEFAULTS = {
     opacity = 0.75, -- panel body opacity (PaTiShared window; 0.3–1)
-    snapWindows = true, -- snap to other PaTi windows at the end of a drag
     locked = false,
     collapsed = false,
     scale = 1,

@@ -38,7 +38,7 @@ changed there.
 ## Settings
 `/pg settings` or ••• → Settings: pull buttons, group info, note, window lock, language, scale, marker
 order, and the **Key bindings** note with the menu path.
-- **Window:** panel opacity (30–100 %) and snapping to other PaTi windows while dragging
+- **Window:** panel opacity (30–100 %)
 
 ## Commands
 `/pg`, `/ptg` or `/patigroup` — alone or `toggle`: show/hide · `settings` · `test` · `show` · `hide` · `lock` · `unlock` ·
