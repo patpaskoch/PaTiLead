@@ -45,11 +45,18 @@ local function combatBlocked()
     return false
 end
 
-local function setVisible(visible)
-    if combatBlocked() then return end
+local function setVisible(visible, quiet)
+    if InCombatLockdown() then -- secure marker buttons: the bar cannot be shown/hidden in combat
+        if not quiet then say("COMBAT_LOCKED") end
+        return false
+    end
     window:SetShown(visible)
-    if not visible then say("HIDDEN_HINT") end
+    if not visible and not quiet then say("HIDDEN_HINT") end
+    return true
 end
+
+-- Optional PaTiSuite control panel: the same rules as the commands, without chat lines (false = not possible now).
+window.suiteSetShown = function(shown) return setVisible(shown, true) end
 
 function PaTiGroup_Toggle() -- global: used by the PATIGROUP_TOGGLE key binding
     setVisible(not window:IsShown())
@@ -127,8 +134,10 @@ local function buildSettings()
             end,
         }))
     end
+    UI.AddWindowSettings(modal, window) -- panel opacity + snapping (PaTiShared)
     modal:Finish(function()
         Logic.RestoreDefaults(DB)
+        window:ApplyOpacity()
         UI.SetLanguage(DB.language)
         window:SetLocked(DB.locked)
         if not InCombatLockdown() then window:SetScale(DB.scale) end
