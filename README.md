@@ -25,6 +25,25 @@ ESC > Options > Key Bindings). The exact path in the Forever client is not yet c
 PaTiGroup never sets a key. An old Ctrl + Left Click binding from version 0.4 or earlier keeps working and can be
 changed there.
 
+## PaTiSuite
+
+This addon is part of the **PaTiSuite** — a collection of small addons for World of Warcraft: Forever.
+Each one is installed on its own and works on its own; none of them is needed by another.
+
+- [PaTiSuite](https://github.com/patpaskoch/PaTiSuite) – optional control panel to show and hide the PaTi windows
+- [PaTiHeal](https://github.com/patpaskoch/PaTiHeal) – healer party frames and click casting
+- [PaTiAuras](https://github.com/patpaskoch/PaTiAuras) – buff, aura and proc watcher
+- [PaTiTank](https://github.com/patpaskoch/PaTiTank) – tank HUD and aggro monitor
+- **PaTiGroup** – raid markers, ready check and pull timer *(this addon)*
+- [PaTiQuest](https://github.com/patpaskoch/PaTiQuest) – selected quest and its objectives
+- [PaTiDungeon](https://github.com/patpaskoch/PaTiDungeon) – instance, group and combat status
+- [PaTiAlerts](https://github.com/patpaskoch/PaTiAlerts) – one window for open problems
+
+### Goes well with (optional)
+
+- [PaTiTank](https://github.com/patpaskoch/PaTiTank) – your personal tank view: health, threat, aggro control
+- [PaTiSuite](https://github.com/patpaskoch/PaTiSuite) – shows and hides this window together with the other PaTi windows
+
 ## Installation
 1. Download the release zip (`PaTiGroup-<version>.zip`).
 2. Unpack it and copy the folder `PaTiGroup` into `World of Warcraft/<client>/Interface/AddOns/`.
@@ -50,6 +69,10 @@ The bar cannot be shown, hidden, collapsed or rearranged in combat (it has secur
 - Markers, Reset All and key bindings are not yet tested in game since the rework.
 - Up to version 0.4 PaTiGroup created the macro `PaTiG_Reset`. It is no longer used or changed; you may delete it
   (`/pg debug` shows whether it still exists).
+
+## Development
+
+Architecture, tests and engineering rules of the suite: [PaTiAdmin](https://github.com/patpaskoch/PaTiAdmin). PaTiAdmin is not a WoW addon — players do not install it. The shared UI code (PaTiShared) is already embedded in this addon's `Shared/` folder; there is nothing extra to install.
 
 ## License
 MIT — see [LICENSE](LICENSE). Copyright (c) 2026 Patrick Koch.
