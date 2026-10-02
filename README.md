@@ -1,5 +1,7 @@
 # PaTiLead
 
+<img src="assets/icon-128.png" width="96" alt="PaTiLead icon">
+
 Lead your group in World of Warcraft: Forever (Interface 16001): raid target markers, ready check and pull timer.
 You pick a target and click a marker — PaTiLead never marks, binds keys or creates macros by itself.
 
@@ -71,7 +73,6 @@ The bar cannot be shown, hidden, collapsed or rearranged in combat (it has secur
 
 ## Known limitations
 - Markers, Reset All and key bindings are not yet tested in game since the rework.
-- No AddOns-list icon yet: the PaTiLead artwork (crown with raid marker) still has to be added (`Media/icon.tga`).
 - Up to version 0.4 the old PaTiGroup created the macro `PaTiG_Reset`. It is no longer used or changed; you may
   delete it (`/plead debug` shows whether it still exists).
 

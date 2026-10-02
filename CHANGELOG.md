@@ -16,6 +16,8 @@ History before this file: `git log`.
 - Settings: own "Key bindings" section with a highlighted help note ("ESC > Key Bindings > PaTiLead", fallback
   path via Options) instead of the small grey hint line.
 - `/plead settings, test, lock, unlock, reset, debug, version, about, changelog`; English texts, German translation.
+- Own icon (owner-provided 2026-10-02, PaTiSuite style: crown over the group with raid markers, red and gold):
+  `Media/icon.tga` + `## IconTexture`, platform images in `assets/`.
 ### Changed
 - **Renamed from PaTiGroup to PaTiLead** (2026-10-02, repository and Git history kept): addon folder, TOC, frames,
   key binding entries and buttons (`PaTiLeadMarker1..8`, `PaTiLeadBindMarker1..8`, `PaTiLeadBindClear`), slash commands
@@ -37,6 +39,6 @@ History before this file: `git log`.
 ### Removed
 - Automatic binding of Ctrl + Left click to Quick Skull on login, SaveBindings on login,
   and the removal of an ALT-G binding on login.
-- The group icon moved to the new PaTiGroup; PaTiLead has no AddOns-list icon until its own artwork is added.
+- The group icon moved to the new PaTiGroup.
 ### Known Issues
 - Not tested in game yet: marker/clear/reset via secure buttons, key bindings, macrotext support of this client.

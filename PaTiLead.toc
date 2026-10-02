@@ -4,6 +4,7 @@
 ## Notes-deDE: Gruppe führen: Zielmarker, Ready Check und Pull-Timer, mit Tastenbelegung
 ## Author: PaTi
 ## Version: 0.4.0
+## IconTexture: Interface\AddOns\PaTiLead\Media\icon
 ## SavedVariablesPerCharacter: PaTiLeadDB
 
 Shared\Shared.xml
