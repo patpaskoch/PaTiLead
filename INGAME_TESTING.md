@@ -21,7 +21,9 @@ Regeln und Eintragen von Ergebnissen: [PaTiAdmin/docs/TESTING.md](https://github
 
 - [ ] PT-GROUP-001 Fresh Install aus dem Release-ZIP: genau ein Ordner `PaTiGroup/`, Addon lädt allein
 - [ ] PT-GROUP-002 PaTiGroup erscheint in der AddOn-Liste mit Beschreibung
-- [ ] PT-GROUP-003 Icon in der AddOn-Liste korrekt, keine weiße oder fehlende Textur
+- [x] PT-GROUP-003 Icon in der AddOn-Liste korrekt, keine weiße oder fehlende Textur
+  - ✅ VERIFIED 2026-10-02
+  - Owner: die Icons erscheinen im Spiel in der AddOn-Liste korrekt.
 - [ ] PT-GROUP-004 Login ohne Lua-Fehler
 - [ ] PT-GROUP-005 `/reload` ohne Lua-Fehler
 
