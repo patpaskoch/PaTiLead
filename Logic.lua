@@ -1,4 +1,4 @@
--- PaTiGroup: saved settings and marker order, no WoW API calls (tested in tests/logic_spec.lua).
+-- PaTiLead: saved settings and marker order, no WoW API calls (tested in tests/logic_spec.lua).
 local _, ns = ...
 local Logic = {}
 ns.Logic = Logic
@@ -9,7 +9,7 @@ Logic.SCALES = { 0.8, 0.9, 1, 1.1, 1.25, 1.5 }
 Logic.NOTE_MAX = 200 -- characters of the local note
 
 -- Raid target indices: 1 Star, 2 Circle, 3 Diamond, 4 Triangle, 5 Moon, 6 Square, 7 Cross, 8 Skull.
--- Default bar order starts with the four markers of PaTiGroup <= 0.4 (Skull, Cross, Moon, Square).
+-- Default bar order starts with Skull, Cross, Moon, Square (the four markers of the first versions).
 Logic.DEFAULT_MARKERS = { 8, 7, 5, 6, 4, 3, 2, 1 }
 
 Logic.DEFAULTS = {

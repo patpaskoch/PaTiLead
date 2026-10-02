@@ -1,4 +1,4 @@
--- PaTiGroup settings and marker logic. Run via PaTiAdmin/tools/check.sh.
+-- PaTiLead settings and marker logic. Run via PaTiAdmin/tools/check.sh.
 local wow = require("wow_api")
 
 local function load()
@@ -6,7 +6,7 @@ local function load()
 end
 
 describe("Logic.Migrate", function()
-    it("creates defaults for players of PaTiGroup <= 0.4 (no saved variables before)", function()
+    it("creates defaults for a new character (no saved variables before)", function()
         local db = load().Migrate(nil)
         assert.same({ 8, 7, 5, 6, 4, 3, 2, 1 }, db.markers)
         assert.is_false(db.locked)

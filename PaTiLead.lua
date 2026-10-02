@@ -1,4 +1,4 @@
--- PaTiGroup: raid markers, ready check and pull timer. The player chooses a target and clicks a marker;
+-- PaTiLead: raid markers, ready check and pull timer. The player chooses a target and clicks a marker;
 -- nothing is marked, bound or created automatically.
 local addonName, ns = ...
 local UI, L, Logic, Bar = ns.UI, ns.UI.L, ns.Logic, ns.Bar
@@ -9,7 +9,7 @@ local layoutPending = false
 local window = Bar.window
 
 local function say(key, ...)
-    print("|cff68caffPaTiGroup:|r " .. L[key]:format(...))
+    print("|cff68caffPaTiLead:|r " .. L[key]:format(...))
 end
 
 local function isSecret(value) return issecretvalue ~= nil and issecretvalue(value) == true end
@@ -30,13 +30,13 @@ Bar.onNoteChanged = function(text) if DB then DB.note = text end end
 
 -- Key bindings (Bindings.xml): names shown in WoW's key binding menu. Nothing is bound automatically.
 local G = _G
-G.BINDING_HEADER_PATIGROUP = "PaTiGroup"
-G.BINDING_NAME_PATIGROUP_TOGGLE = L.TOGGLE
+G.BINDING_HEADER_PATILEAD = "PaTiLead"
+G.BINDING_NAME_PATILEAD_TOGGLE = L.TOGGLE
 for marker = 1, 8 do
-    local name = marker == 8 and "PaTiGroupQuickSkull" or "PaTiGroupBindMarker" .. marker
+    local name = "PaTiLeadBindMarker" .. marker
     G["BINDING_NAME_CLICK " .. name .. ":LeftButton"] = Bar.MarkerName(marker)
 end
-G["BINDING_NAME_CLICK PaTiGroupBindClear:LeftButton"] = L.CLEAR
+G["BINDING_NAME_CLICK PaTiLeadBindClear:LeftButton"] = L.CLEAR
 
 -- Actions --------------------------------------------------------------------------------------
 
@@ -58,7 +58,7 @@ end
 -- Optional PaTiSuite control panel: the same rules as the commands, without chat lines (false = not possible now).
 window.suiteSetShown = function(shown) return setVisible(shown, true) end
 
-function PaTiGroup_Toggle() -- global: used by the PATIGROUP_TOGGLE key binding
+function PaTiLead_Toggle() -- global: used by the PATILEAD_TOGGLE key binding
     setVisible(not window:IsShown())
 end
 
@@ -93,7 +93,7 @@ local function markerItems()
 end
 
 local function buildSettings()
-    modal = UI.CreateModal("PaTiGroupSettings", function() return "PaTiGroup " .. L.SETTINGS end, 400)
+    modal = UI.CreateModal("PaTiLeadSettings", function() return "PaTiLead " .. L.SETTINGS end, 400)
     local function box(label, key)
         return UI.CreateCheckbox(modal, label, {
             get = function() return DB[key] end,
@@ -119,7 +119,7 @@ local function buildSettings()
             if not InCombatLockdown() then window:SetScale(scale) else layoutPending = true end
         end,
     }))
-    -- Key bindings live in the WoW key binding menu (Bindings.xml); PaTiGroup never binds a key itself.
+    -- Key bindings live in the WoW key binding menu (Bindings.xml); PaTiLead never binds a key itself.
     modal:AddSection("KEYBIND_SECTION")
     modal:AddNote("KEYBIND_TITLE", "KEYBIND_PATH", "KEYBIND_TEXT", 4)
     modal:AddSection("MARKERS")
@@ -160,7 +160,7 @@ local function printDebug()
         if key then keys[#keys + 1] = key .. "=" .. button:GetName() end
     end
     local oldMacro = GetMacroIndexByName and GetMacroIndexByName("PaTiG_Reset") or 0
-    print("|cff68caffPaTiGroup Debug:|r")
+    print("|cff68caffPaTiLead Debug:|r")
     for _, line in ipairs({
         ("Addon %s %s · PaTiShared UI %s"):format(addonName, addonVersion(), tostring(UI.VERSION)),
         ("WoW %s (build %s, interface %s) · locale %s · UI language %s"):format(tostring(version), tostring(build),
@@ -177,7 +177,7 @@ local function printDebug()
 end
 
 local COMMANDS = {
-    [""] = PaTiGroup_Toggle, toggle = PaTiGroup_Toggle,
+    [""] = PaTiLead_Toggle, toggle = PaTiLead_Toggle,
     show = function() setVisible(true) end, an = function() setVisible(true) end,
     hide = function() setVisible(false) end, aus = function() setVisible(false) end,
     test = toggleTestMode,
@@ -188,13 +188,12 @@ local COMMANDS = {
     debug = printDebug,
     version = function() say("VERSION", addonVersion()) end,
     about = function() say("ABOUT", addonVersion()) end,
-    changelog = function() print("|cff68caffPaTiGroup " .. addonVersion() .. ":|r " .. L.CHANGELOG_TEXT) end,
+    changelog = function() print("|cff68caffPaTiLead " .. addonVersion() .. ":|r " .. L.CHANGELOG_TEXT) end,
 }
 
-SLASH_PATIGROUP1 = "/patigroup"
-SLASH_PATIGROUP2 = "/pg"
-SLASH_PATIGROUP3 = "/ptg"
-SlashCmdList.PATIGROUP = function(message)
+SLASH_PATILEAD1 = "/patilead"
+SLASH_PATILEAD2 = "/plead"
+SlashCmdList.PATILEAD = function(message)
     local command = COMMANDS[(message or ""):match("^%s*(.-)%s*$"):lower()]
     if command and DB then command() else say("HELP") end
 end
@@ -223,8 +222,8 @@ pcall(events.RegisterEvent, events, "PLAYER_ROLES_ASSIGNED") -- not in every cli
 
 events:SetScript("OnEvent", function(_, event)
     if event == "PLAYER_LOGIN" then
-        PaTiGroupDB = Logic.Migrate(PaTiGroupDB)
-        DB = PaTiGroupDB
+        PaTiLeadDB = Logic.Migrate(PaTiLeadDB)
+        DB = PaTiLeadDB
         UI.SetLanguage(DB.language)
         window:Attach(DB, 0, -170)
         if not InCombatLockdown() then window:SetScale(DB.scale) end -- /reload in combat: scale follows later

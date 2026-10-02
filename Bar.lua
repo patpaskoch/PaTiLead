@@ -1,4 +1,4 @@
--- PaTiGroup: the bar — target line, marker buttons, actions, pull timer, group info and note.
+-- PaTiLead: the bar — target line, marker buttons, actions, pull timer, group info and note.
 -- Protected actions only through secure buttons with a fixed action (SetRaidTarget is protected in this
 -- client); positions, visibility and attributes change only out of combat.
 local _, ns = ...
@@ -17,13 +17,13 @@ local function isSecret(value) return issecretvalue ~= nil and issecretvalue(val
 function Bar.MarkerName(index) return _G["RAID_TARGET_" .. index] or L["MARKER_" .. index] end
 function Bar.MarkerTexture(index) return MARKER_TEXTURE:format(index) end
 
-local window = UI.CreateWindow("PaTiGroupMarkerBar", "PaTiGroup", WIDTH, 120)
+local window = UI.CreateWindow("PaTiLeadMarkerBar", "PaTiLead", WIDTH, 120)
 Bar.window = window
 
 -- Secure button that sets `marker` (0 = remove) on the current target; clicked by mouse or key binding.
 local function markerButton(name, parent, marker)
     local button = CreateFrame("Button", name, parent, "SecureActionButtonTemplate,BackdropTemplate")
-    button:RegisterForClicks("AnyUp", "AnyDown") -- as in PaTiGroup <= 0.4 (ActionButtonUseKeyDown either way)
+    button:RegisterForClicks("AnyUp", "AnyDown") -- down or up, whichever ActionButtonUseKeyDown says
     button:SetAttribute("type", "raidtarget")
     button:SetAttribute("unit", "target")
     button:SetAttribute("action", "set")
@@ -42,7 +42,7 @@ end
 -- Bar buttons, one per marker (shown/ordered by the settings) plus "clear".
 Bar.markerButtons = {}
 for marker = 1, 8 do
-    local button = markerButton("PaTiGroupMarker" .. marker, window, marker)
+    local button = markerButton("PaTiLeadMarker" .. marker, window, marker)
     styleIconButton(button, function() return { Bar.MarkerName(marker), L.MARKER_TIP } end)
     local icon = button:CreateTexture(nil, "ARTWORK")
     icon:SetSize(BUTTON - 8, BUTTON - 8)
@@ -50,19 +50,19 @@ for marker = 1, 8 do
     icon:SetTexture(Bar.MarkerTexture(marker))
     Bar.markerButtons[marker] = button
 end
-local clear = markerButton("PaTiGroupClear", window, 0)
+local clear = markerButton("PaTiLeadClear", window, 0)
 styleIconButton(clear, function() return { L.CLEAR, L.CLEAR_TIP } end)
 for _, degrees in ipairs({ 45, -45 }) do UI.Line(clear, 12, degrees):SetColorTexture(UI.Color("TextMuted")) end
 Bar.clearButton = clear
 
 -- Invisible buttons for WoW's key binding menu (Bindings.xml). Parent UIParent, so bindings also work while
--- the bar is hidden. "PaTiGroupQuickSkull" keeps its 0.4 name: an existing binding on it keeps working.
+-- the bar is hidden.
 Bar.bindingButtons = {}
 for marker = 1, 8 do
-    local name = marker == 8 and "PaTiGroupQuickSkull" or "PaTiGroupBindMarker" .. marker
+    local name = "PaTiLeadBindMarker" .. marker
     Bar.bindingButtons[#Bar.bindingButtons + 1] = markerButton(name, UIParent, marker)
 end
-Bar.bindingButtons[#Bar.bindingButtons + 1] = markerButton("PaTiGroupBindClear", UIParent, 0)
+Bar.bindingButtons[#Bar.bindingButtons + 1] = markerButton("PaTiLeadBindClear", UIParent, 0)
 for _, button in ipairs(Bar.bindingButtons) do
     button:SetSize(1, 1)
     button:SetAlpha(0)
@@ -92,7 +92,7 @@ Bar.readyCheck = UI.CreateButton(window, "READY_CHECK", nil, function()
 end)
 UI.SetTooltip(Bar.readyCheck, function() return { L.READY_CHECK, L.READY_CHECK_TIP, L.LEADER_ONLY } end)
 
-local reset = CreateFrame("Button", "PaTiGroupReset", window, "SecureActionButtonTemplate,BackdropTemplate")
+local reset = CreateFrame("Button", "PaTiLeadReset", window, "SecureActionButtonTemplate,BackdropTemplate")
 UI.StyleButton(reset, "RESET_ALL")
 reset:RegisterForClicks("AnyUp", "AnyDown")
 reset:SetAttribute("type", "macro")

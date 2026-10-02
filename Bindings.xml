@@ -1,15 +1,15 @@
 <Bindings>
-    <!-- Shown under "PaTiGroup" in WoW's key binding menu. PaTiGroup never binds a key by itself. -->
-    <Binding name="PATIGROUP_TOGGLE" header="PATIGROUP" category="BINDING_HEADER_PATIGROUP">
-        PaTiGroup_Toggle()
+    <!-- Shown under "PaTiLead" in WoW's key binding menu. PaTiLead never binds a key by itself. -->
+    <Binding name="PATILEAD_TOGGLE" header="PATILEAD" category="BINDING_HEADER_PATILEAD">
+        PaTiLead_Toggle()
     </Binding>
-    <Binding name="CLICK PaTiGroupQuickSkull:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
-    <Binding name="CLICK PaTiGroupBindMarker7:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
-    <Binding name="CLICK PaTiGroupBindMarker6:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
-    <Binding name="CLICK PaTiGroupBindMarker5:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
-    <Binding name="CLICK PaTiGroupBindMarker4:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
-    <Binding name="CLICK PaTiGroupBindMarker3:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
-    <Binding name="CLICK PaTiGroupBindMarker2:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
-    <Binding name="CLICK PaTiGroupBindMarker1:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
-    <Binding name="CLICK PaTiGroupBindClear:LeftButton" category="BINDING_HEADER_PATIGROUP"/>
+    <Binding name="CLICK PaTiLeadBindMarker8:LeftButton" category="BINDING_HEADER_PATILEAD"/>
+    <Binding name="CLICK PaTiLeadBindMarker7:LeftButton" category="BINDING_HEADER_PATILEAD"/>
+    <Binding name="CLICK PaTiLeadBindMarker6:LeftButton" category="BINDING_HEADER_PATILEAD"/>
+    <Binding name="CLICK PaTiLeadBindMarker5:LeftButton" category="BINDING_HEADER_PATILEAD"/>
+    <Binding name="CLICK PaTiLeadBindMarker4:LeftButton" category="BINDING_HEADER_PATILEAD"/>
+    <Binding name="CLICK PaTiLeadBindMarker3:LeftButton" category="BINDING_HEADER_PATILEAD"/>
+    <Binding name="CLICK PaTiLeadBindMarker2:LeftButton" category="BINDING_HEADER_PATILEAD"/>
+    <Binding name="CLICK PaTiLeadBindMarker1:LeftButton" category="BINDING_HEADER_PATILEAD"/>
+    <Binding name="CLICK PaTiLeadBindClear:LeftButton" category="BINDING_HEADER_PATILEAD"/>
 </Bindings>
