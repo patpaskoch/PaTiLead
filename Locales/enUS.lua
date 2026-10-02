@@ -4,6 +4,7 @@ ns.Locales = ns.Locales or {}
 local L = ns.Locales.enUS or {}
 ns.Locales.enUS = L
 
+L.GENERAL = "General"
 L.TARGET = "Target:"
 L.NO_TARGET = "no target"
 L.LEADER = "Leader:"

@@ -29,6 +29,7 @@ History before this file: `git log`.
 - Collapse/Expand in the ••• menu: only the header stays; saved in PaTiLeadDB.collapsed (old saves: expanded).
   Disabled in combat (the bar holds secure buttons). Restore Defaults expands the bar.
 ### Fixed
+- Settings: the first section title showed the key "GENERAL" (no text for it); now "General" / "Allgemein".
 - Target marker, names, roles and leader/assist flags are checked for restricted (secret) values before they
   are compared or tested; unreadable values show as "no marker" / "no role".
 - Leader/assist detection also accepts the value 1 that older client APIs return (the secret-value fix above
