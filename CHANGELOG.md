@@ -31,6 +31,7 @@ History before this file: `git log`.
 - Collapse/Expand in the ••• menu: only the header stays; saved in PaTiLeadDB.collapsed (old saves: expanded).
   Disabled in combat (the bar holds secure buttons). Restore Defaults expands the bar.
 ### Fixed
+- Hardening: a broken SavedVariables save (not a table, a broken schema or scale) no longer breaks the login; only the broken value is replaced, every valid setting (also `false`) stays, and the migration is idempotent (tests/robustness_spec.lua).
 - Settings: the first section title showed the key "GENERAL" (no text for it); now "General" / "Allgemein".
 - Target marker, names, roles and leader/assist flags are checked for restricted (secret) values before they
   are compared or tested; unreadable values show as "no marker" / "no role".
