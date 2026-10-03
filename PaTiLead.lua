@@ -137,6 +137,7 @@ local function buildSettings()
     UI.AddWindowSettings(modal, window) -- panel opacity + snapping (PaTiShared)
     modal:Finish(function()
         Logic.RestoreDefaults(DB)
+        window:ApplyTheme() -- Restore Defaults: theme back to default
         window:ApplyOpacity()
         UI.SetLanguage(DB.language)
         window:SetLocked(DB.locked)
@@ -245,3 +246,4 @@ events:SetScript("OnEvent", function(_, event)
     end
 end)
 UI.OnLanguageChanged(function() if DB then Bar.Paint(testMode) end end)
+UI.OnThemeChanged(function() if DB then Bar.Paint(testMode) end end)

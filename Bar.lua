@@ -34,8 +34,8 @@ end
 local function styleIconButton(button, tooltip)
     button:SetSize(BUTTON, BUTTON)
     UI.ApplyBackdrop(button, "Panel", "Border")
-    button:SetScript("OnEnter", function(self) if self:IsEnabled() then self:SetBackdropBorderColor(UI.Color("Accent")) end end)
-    button:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(UI.Color("Border")) end)
+    button:SetScript("OnEnter", function(self) if self:IsEnabled() then UI.Paint(self, "SetBackdropBorderColor", "Accent") end end)
+    button:SetScript("OnLeave", function(self) UI.Paint(self, "SetBackdropBorderColor", "Border") end)
     UI.SetTooltip(button, tooltip)
 end
 
@@ -52,7 +52,7 @@ for marker = 1, 8 do
 end
 local clear = markerButton("PaTiLeadClear", window, 0)
 styleIconButton(clear, function() return { L.CLEAR, L.CLEAR_TIP } end)
-for _, degrees in ipairs({ 45, -45 }) do UI.Line(clear, 12, degrees):SetColorTexture(UI.Color("TextMuted")) end
+for _, degrees in ipairs({ 45, -45 }) do UI.Paint(UI.Line(clear, 12, degrees), "SetColorTexture", "TextMuted") end
 Bar.clearButton = clear
 
 -- Invisible buttons for WoW's key binding menu (Bindings.xml). Parent UIParent, so bindings also work while
