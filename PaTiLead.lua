@@ -173,6 +173,7 @@ local function printDebug()
         ("Markers on bar: %s · key bindings: %s"):format(table.concat(Logic.VisibleMarkers(DB.markers), ","),
             #keys > 0 and table.concat(keys, ", ") or "none"),
         ("Old macro PaTiG_Reset: %s"):format(oldMacro > 0 and "present, unused since 0.5 (you may delete it)" or "not present"),
+        ("Last caught error (ready check / countdown): %s"):format(Bar.lastError or "none"),
     }) do print("  " .. line) end
 end
 

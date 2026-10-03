@@ -19,6 +19,7 @@ History before this file: `git log`.
 - Own icon (owner-provided 2026-10-02, PaTiSuite style: crown over the group with raid markers, red and gold):
   `Media/icon.tga` + `## IconTexture`, platform images in `assets/`.
 ### Changed
+- Diagnostics (hardening 2026-10-02): errors that are caught so the addon keeps running are no longer silent — the debug command shows the last caught error per source (no chat spam, nothing saved).
 - **Renamed from PaTiGroup to PaTiLead** (2026-10-02, repository and Git history kept): addon folder, TOC, frames,
   key binding entries and buttons (`PaTiLeadMarker1..8`, `PaTiLeadBindMarker1..8`, `PaTiLeadBindClear`), slash commands
   `/plead` and `/patilead` (`/pg`, `/ptg`, `/patigroup` now belong to the new PaTiGroup). SavedVariables are now

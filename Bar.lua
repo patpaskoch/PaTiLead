@@ -88,7 +88,9 @@ local function canStartGroupAction()
         or Logic.Flag(UnitIsGroupAssistant("player"), isSecret)
 end
 Bar.readyCheck = UI.CreateButton(window, "READY_CHECK", nil, function()
-    if canStartGroupAction() and DoReadyCheck then pcall(DoReadyCheck) end
+    if not (canStartGroupAction() and DoReadyCheck) then return end
+    local ok, err = pcall(DoReadyCheck)
+    if not ok then Bar.lastError = tostring(err):sub(1, 120) end -- /plead debug only
 end)
 UI.SetTooltip(Bar.readyCheck, function() return { L.READY_CHECK, L.READY_CHECK_TIP, L.LEADER_ONLY } end)
 
@@ -103,7 +105,9 @@ Bar.reset = reset
 Bar.pulls = {}
 for index, seconds in ipairs(PULL_SECONDS) do
     local pull = UI.CreateButton(window, function() return L.PULL:format(seconds) end, 64, function()
-        if canStartGroupAction() and C_PartyInfo and C_PartyInfo.DoCountdown then pcall(C_PartyInfo.DoCountdown, seconds) end
+        if not (canStartGroupAction() and C_PartyInfo and C_PartyInfo.DoCountdown) then return end
+        local ok, err = pcall(C_PartyInfo.DoCountdown, seconds)
+        if not ok then Bar.lastError = tostring(err):sub(1, 120) end -- /plead debug only
     end)
     UI.SetTooltip(pull, function() return { L.PULL:format(seconds), L.PULL_TIP, L.LEADER_ONLY } end)
     Bar.pulls[index] = pull
