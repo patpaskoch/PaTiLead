@@ -277,6 +277,10 @@ function Bar.Paint(testMode)
     targetIcon:SetTexture(marker and Bar.MarkerTexture(marker) or nil)
     targetIcon:SetShown(marker ~= nil and not Bar.collapsed)
     paintGroup(testMode)
+    -- The bar holds secure marker buttons, so WoW blocks SetEnabled on its buttons in combat ("Interface action failed
+    -- because of an AddOn"; taint.log: Bar.lua Paint -> Button:SetEnabled()). In combat the buttons keep their state —
+    -- a click does nothing then anyway (canStartGroupAction is false in combat); PLAYER_REGEN_ENABLED repaints.
+    if InCombatLockdown() then return end
     local canStart = canStartGroupAction() and not testMode
     Bar.readyCheck:SetEnabled(canStart and DoReadyCheck ~= nil)
     for _, pull in ipairs(Bar.pulls) do

@@ -96,6 +96,13 @@ zählt ab `PT-GROUP-200`.
 
 - [ ] PT-LEAD-090 Kein Lua-Fehler im Kampf
 - [ ] PT-LEAD-091 Keine `ADDON_ACTION_BLOCKED` / `ADDON_ACTION_FORBIDDEN`
+  - ❌ FAIL 2026-10-03
+  - Owner sah im Kampf „Interface-Aktion auf Grund eines Addons fehlgeschlagen“ (Addon nicht genannt). `taint.log`
+    (28.09., alter Name PaTiGroup) zeigt die Ursache im heutigen PaTiLead-Code: `Bar.lua` Paint → `Button:SetEnabled()`
+    auf Ready Check/Pull im Kampf blockiert.
+  - 🔧 FIX IMPLEMENTED 2026-10-03
+  - `Bar.Paint` ändert die Buttons im Kampf nicht mehr; nach dem Kampf wird neu gezeichnet.
+  - MANUAL RETEST REQUIRED
 - [ ] PT-LEAD-092 `taint.log` (`/console taintLog 1`) ohne PaTiLead-Eintrag
 - [ ] PT-LEAD-093 Im Kampf: Ausblenden, Collapse, Test Mode gesperrt mit Hinweis; Marker-Reihenfolge und Größe
   werden erst nach dem Kampf angewendet

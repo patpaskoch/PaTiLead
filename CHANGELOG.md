@@ -33,6 +33,10 @@ History before this file: `git log`.
 - Collapse/Expand in the ••• menu: only the header stays; saved in PaTiLeadDB.collapsed (old saves: expanded).
   Disabled in combat (the bar holds secure buttons). Restore Defaults expands the bar.
 ### Fixed
+- "Interface action failed because of an AddOn" in combat (owner 2026-10-03; taint.log: `Bar.lua` Paint →
+  `Button:SetEnabled()`): the bar holds secure marker buttons, so WoW blocks `SetEnabled` on its Ready Check and Pull
+  buttons in combat. Paint no longer touches them in combat (a click does nothing there anyway); they are updated
+  after combat.
 - Hardening: a broken SavedVariables save (not a table, a broken schema or scale) no longer breaks the login; only the broken value is replaced, every valid setting (also `false`) stays, and the migration is idempotent (tests/robustness_spec.lua).
 - Settings: the first section title showed the key "GENERAL" (no text for it); now "General" / "Allgemein".
 - Target marker, names, roles and leader/assist flags are checked for restricted (secret) values before they
