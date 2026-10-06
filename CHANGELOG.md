@@ -33,6 +33,10 @@ History before this file: `git log`.
 - Collapse/Expand in the ••• menu: only the header stays; saved in PaTiLeadDB.collapsed (old saves: expanded).
   Disabled in combat (the bar holds secure buttons). Restore Defaults expands the bar.
 ### Fixed
+- "Reset All" left the last marker (skull) on you when you had none before — or moved the target's marker to you
+  (owner 2026-10-06). A single click cannot fix this (the client drops the final "/tm [@player] 0" while it still
+  thinks you are unmarked); the button now reads "Click again" until your own marker is gone. Label only, out of
+  combat; the secure macro is unchanged.
 - "Interface action failed because of an AddOn" in combat (owner 2026-10-03; taint.log: `Bar.lua` Paint →
   `Button:SetEnabled()`): the bar holds secure marker buttons, so WoW blocks `SetEnabled` on its Ready Check and Pull
   buttons in combat. Paint no longer touches them in combat (a click does nothing there anyway); they are updated

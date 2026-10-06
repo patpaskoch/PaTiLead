@@ -102,6 +102,24 @@ reset:SetAttribute("macrotext", Logic.ResetMacroText())
 UI.SetTooltip(reset, function() return { L.RESET_ALL, L.RESET_ALL_TIP } end)
 Bar.reset = reset
 
+-- In one click "Reset All" leaves the last marker (skull) on you when you had none before (owner 2026-10-06):
+-- all /tm lines run in the same moment and the client still thinks you are unmarked, so it drops the final
+-- "/tm [@player] 0". A second click removes it (then you are marked). The button says so until you are unmarked.
+-- Label only, out of combat: the button sizes to its text and is secure (no resize in combat).
+local resetAgain, resetAt = false, 0
+local RESET_SETTLE = 2 -- s: right after the click you are not marked yet; only later "unmarked" ends the hint
+local function playerMarked()
+    return GetRaidTargetIndex and Logic.MarkerIndex(GetRaidTargetIndex("player"), isSecret) ~= nil
+end
+-- Marked when you click: this click also clears you (no hint). Unmarked: the skull will stay on you → hint.
+reset:HookScript("OnClick", function() resetAgain, resetAt = not playerMarked(), GetTime() end)
+local function paintResetHint(testMode)
+    if InCombatLockdown() then return end
+    local marked = not testMode and playerMarked()
+    if not marked and GetTime() - resetAt > RESET_SETTLE then resetAgain = false end
+    UI.BindText(reset.label, resetAgain and "RESET_AGAIN" or "RESET_ALL")
+end
+
 Bar.pulls = {}
 for index, seconds in ipairs(PULL_SECONDS) do
     local pull = UI.CreateButton(window, function() return L.PULL:format(seconds) end, 64, function()
@@ -263,6 +281,7 @@ local function paintGroup(testMode)
 end
 
 function Bar.Paint(testMode)
+    paintResetHint(testMode)
     local marker
     if testMode then
         targetName:SetText(L.TEST_TARGET)

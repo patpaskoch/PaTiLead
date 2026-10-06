@@ -67,6 +67,9 @@ zählt ab `PT-GROUP-200`.
   - Owner: Klick auf „Alle entfernen“ setzt einen Totenkopf (auf dich); ein zweiter Klick nimmt ihn weg.
     Vermutete Ursache: alle /tm-Zeilen laufen im selben Moment; der Client prüft „hast du schon einen Marker?“ mit
     dem Stand vor dem Klick, darum wird das abschließende „/tm 0“ übergangen, wenn du vorher keinen Marker hattest.
+  - Owner: ebenso wandert der Marker eines ausgewählten Ziels zu dir.
+  - 🔧 FIX IMPLEMENTED 2026-10-06 (in einem Klick nicht lösbar: der Knopf zeigt „Nochmal klicken“, bis dein Marker weg ist)
+  - MANUAL RETEST REQUIRED
 - [ ] PT-LEAD-053 Auswahl und Reihenfolge der Marker aus den Einstellungen gilt
 
 ## Ready Check / Pull Timer
