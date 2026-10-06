@@ -63,6 +63,10 @@ zählt ab `PT-GROUP-200`.
 - [ ] PT-LEAD-050 Alle 8 Marker setzen jeweils den richtigen Marker auf das aktuelle Ziel
 - [ ] PT-LEAD-051 Entfernen (Clear) nimmt den Marker vom Ziel
 - [ ] PT-LEAD-052 Reset All entfernt alle acht Marker von allen Zielen
+  - ❌ FAIL 2026-10-06
+  - Owner: Klick auf „Alle entfernen“ setzt einen Totenkopf (auf dich); ein zweiter Klick nimmt ihn weg.
+    Vermutete Ursache: alle /tm-Zeilen laufen im selben Moment; der Client prüft „hast du schon einen Marker?“ mit
+    dem Stand vor dem Klick, darum wird das abschließende „/tm 0“ übergangen, wenn du vorher keinen Marker hattest.
 - [ ] PT-LEAD-053 Auswahl und Reihenfolge der Marker aus den Einstellungen gilt
 
 ## Ready Check / Pull Timer
