@@ -112,8 +112,24 @@ local function playerMarked()
     return GetRaidTargetIndex and Logic.MarkerIndex(GetRaidTargetIndex("player"), isSecret) ~= nil
 end
 -- Marked when you click: this click also clears you (no hint). Unmarked: the skull will stay on you → hint.
-reset:HookScript("OnClick", function() resetAgain, resetAt = not playerMarked(), GetTime() end)
-local function paintResetHint(testMode)
+-- The button is registered for down and up, so the hook runs twice per click; only the first counts (owner
+-- 2026-10-06: on the up the skull was already gone, the hint came back and stayed). A timer re-checks after the
+-- settle time (a small hidden OnUpdate frame, stopped right after), so the label also ends without another event.
+local CLICK_GAP = 0.5 -- s: down and up of one click
+local settle = CreateFrame("Frame")
+settle:Hide()
+settle:SetScript("OnUpdate", function(self)
+    if GetTime() - resetAt <= RESET_SETTLE then return end
+    self:Hide()
+    Bar.PaintResetHint()
+end)
+reset:HookScript("OnClick", function()
+    local now = GetTime()
+    if now - resetAt < CLICK_GAP then return end
+    resetAgain, resetAt = not playerMarked(), now
+    settle:Show()
+end)
+function Bar.PaintResetHint(testMode)
     if InCombatLockdown() then return end
     local marked = not testMode and playerMarked()
     if not marked and GetTime() - resetAt > RESET_SETTLE then resetAgain = false end
@@ -281,7 +297,7 @@ local function paintGroup(testMode)
 end
 
 function Bar.Paint(testMode)
-    paintResetHint(testMode)
+    Bar.PaintResetHint(testMode)
     local marker
     if testMode then
         targetName:SetText(L.TEST_TARGET)

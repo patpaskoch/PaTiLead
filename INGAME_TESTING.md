@@ -70,6 +70,11 @@ zählt ab `PT-GROUP-200`.
   - Owner: ebenso wandert der Marker eines ausgewählten Ziels zu dir.
   - 🔧 FIX IMPLEMENTED 2026-10-06 (in einem Klick nicht lösbar: der Knopf zeigt „Nochmal klicken“, bis dein Marker weg ist)
   - MANUAL RETEST REQUIRED
+  - ❌ FAIL 2026-10-06
+  - Owner: „Nochmal klicken“ geht nicht weg.
+  - 🔧 FIX IMPLEMENTED 2026-10-06 (der Klick zählte doppelt – Drücken und Loslassen –, beim Loslassen kam der
+    Hinweis zurück; jetzt zählt nur der erste, und nach 2 s wird nachgeprüft)
+  - MANUAL RETEST REQUIRED
 - [ ] PT-LEAD-053 Auswahl und Reihenfolge der Marker aus den Einstellungen gilt
 
 ## Ready Check / Pull Timer
