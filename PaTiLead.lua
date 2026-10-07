@@ -124,7 +124,7 @@ local function buildSettings()
     modal:AddNote("KEYBIND_TITLE", "KEYBIND_PATH", "KEYBIND_TEXT", 4)
     modal:AddSection("MARKERS")
     for slot = 1, Logic.SLOTS do
-        modal:AddRow(function() return L.SLOT:format(slot) end, UI.CreateDropdown(modal, 170, {
+        modal:AddRow(function() return L.MARKER_SLOT:format(slot) end, UI.CreateDropdown(modal, 170, {
             items = markerItems,
             get = function() return DB.markers[slot] end,
             set = function(marker)
