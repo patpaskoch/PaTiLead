@@ -5,6 +5,8 @@ History before this file: `git log`.
 
 ## [Unreleased] — planned 0.5.0
 ### Added
+- Theme **Soft Fantasy** (PaTiShared, owner wish 2026-10-19): calm slate blue, grey and violet with a muted
+  lavender accent — the fourth choice in the settings and in PaTiSuite.
 - Themes (owner wish 2026-10-03): Settings → Window → Theme — Default (the PaTi look as before), WoForever (warm brown, gold/bronze) or Dracula (dark, purple/pink/cyan accents). Colours only; layout, secure buttons and behaviour are unchanged. Saved per character in this addon (`theme`, unknown values → Default); Restore Defaults returns to Default. PaTiSuite can switch all PaTi windows at once.
 - Window settings (PaTiShared): panel opacity 30–100 % (default 75 %, the header stays opaque). The window registers
   itself for the optional PaTiSuite control panel, which shows/hides it with this addon's own rules. (Snapping to
