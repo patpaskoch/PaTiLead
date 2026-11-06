@@ -2,28 +2,25 @@
 
 <img src="assets/icon-128.png" width="96" alt="PaTiLead icon">
 
+## Install
+
+**📥 [Download PaTiLead Beta](https://github.com/patpaskoch/PaTiLead/releases/download/v0.4.0-beta.1/PaTiLead-0.4.0-beta.1.zip)** · [Installation guide](#installation)
+
+*Installation-test preview — not yet a stable release.*
+
 ## What is PaTiLead?
 
-> **Installation-test beta available:** [Download the current ZIP from Releases](https://github.com/patpaskoch/PaTiLead/releases). This is an unverified preview for testing the installation, not a stable release.
+**Lead the pull. Keep the party in sync.**
 
-Lead your group in World of Warcraft: Forever (Interface 16001): raid target markers, ready check and pull timer.
-You pick a target and click a marker — PaTiLead never marks, binds keys or creates macros by itself.
-
-> Status: in development, not yet stable. Not yet tested in game since the rework.
->
-> PaTiLead is the former **PaTiGroup** (renamed 2026-10-02, history kept). The name PaTiGroup now belongs to a new,
-> small party-awareness addon (who is tank, healer, what the tank targets). Settings of the old PaTiGroup are not
-> taken over: PaTiLead starts with its own `PaTiLeadDB`.
+Great groups run on clear signals. PaTiLead puts raid markers, ready checks and pull countdowns right where you need them, so everyone knows the plan before the fight begins. **Less confusion. More coordination.**
 
 ## Features
 
-- All eight markers plus Clear; choose which markers appear and in which order
-- Reset All removes all eight markers from all targets
-- Ready check and pull 3 / 5 / 10 for leader and assistants (pull buttons can be hidden)
-- Current target with its marker, group leader, assistants and role counts
-- A short note, stored only on your PC
-- ••• menu: Settings, Lock, Collapse, Test Mode, Hide. Settings: language, scale, what to show.
-  Languages: English, Deutsch (others fall back to English)
+- **Mark your targets:** Place or clear raid markers with a click.
+- **Ready when you are:** Start a ready check before the pull.
+- **Countdown together:** Choose a three-, five- or ten-second pull timer.
+- **Keep the plan visible:** See the target, leader, assistants and role counts.
+- **Make it yours:** Choose your markers, shortcuts and a compact layout.
 
 ## Installation
 
@@ -44,6 +41,16 @@ You pick a target and click a marker — PaTiLead never marks, binds keys or cre
 `/plead settings` or ••• → Settings: pull buttons, group info, note, window lock, language, scale, marker
 order, and the **Key bindings** note with the menu path.
 - **Window:** panel opacity (30–100 %)
+
+## Important notes
+
+> **Installation-test beta available:** [Download the current ZIP from Releases](https://github.com/patpaskoch/PaTiLead/releases). This is an unverified preview for testing the installation, not a stable release.
+
+> Status: in development, not yet stable. Not yet tested in game since the rework.
+>
+> PaTiLead is the former **PaTiGroup** (renamed 2026-10-02, history kept). The name PaTiGroup now belongs to a new,
+> small party-awareness addon (who is tank, healer, what the tank targets). Settings of the old PaTiGroup are not
+> taken over: PaTiLead starts with its own `PaTiLeadDB`.
 
 ## Key bindings
 
