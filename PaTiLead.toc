@@ -3,7 +3,7 @@
 ## Notes: Lead your group: raid markers, ready check and pull timer, with key bindings
 ## Notes-deDE: Gruppe führen: Zielmarker, Ready Check und Pull-Timer, mit Tastenbelegung
 ## Author: PaTi
-## Version: 0.4.0
+## Version: 0.4.0-beta.1
 ## IconTexture: Interface\AddOns\PaTiLead\Media\icon
 ## SavedVariablesPerCharacter: PaTiLeadDB
 
