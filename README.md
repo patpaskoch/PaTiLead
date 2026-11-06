@@ -2,6 +2,8 @@
 
 <img src="assets/icon-128.png" width="96" alt="PaTiLead icon">
 
+## What is PaTiLead?
+
 Lead your group in World of Warcraft: Forever (Interface 16001): raid target markers, ready check and pull timer.
 You pick a target and click a marker — PaTiLead never marks, binds keys or creates macros by itself.
 
@@ -12,6 +14,7 @@ You pick a target and click a marker — PaTiLead never marks, binds keys or cre
 > taken over: PaTiLead starts with its own `PaTiLeadDB`.
 
 ## Features
+
 - All eight markers plus Clear; choose which markers appear and in which order
 - Reset All removes all eight markers from all targets
 - Ready check and pull 3 / 5 / 10 for leader and assistants (pull buttons can be hidden)
@@ -20,7 +23,28 @@ You pick a target and click a marker — PaTiLead never marks, binds keys or cre
 - ••• menu: Settings, Lock, Collapse, Test Mode, Hide. Settings: language, scale, what to show.
   Languages: English, Deutsch (others fall back to English)
 
+## Installation
+
+![PaTiLead – three-step installation guide](assets/installation_en.svg)
+
+1. 📥 **Download** – Open [GitHub Releases](https://github.com/patpaskoch/PaTiLead/releases) and download the `PaTiLead-<version>.zip` file under **Assets** (not **Source code (zip)**).
+2. 📂 **Extract & Copy** – Right-click the ZIP, select **Extract All**, then copy the extracted `PaTiLead` folder into the WoW Forever client's `Interface/AddOns/` folder. No renaming is needed.
+3. ☑️ **Enable in Game** – Start WoW, open the **AddOns** menu at character selection, tick **PaTiLead**, and click **OK**.
+
+## Getting Started
+
+- Target an enemy, click a marker
+- `/plead settings` → marker order; the "Key bindings" section shows where to bind keys
+- `/plead test` shows example data
+
+## Settings
+
+`/plead settings` or ••• → Settings: pull buttons, group info, note, window lock, language, scale, marker
+order, and the **Key bindings** note with the menu path.
+- **Window:** panel opacity (30–100 %)
+
 ## Key bindings
+
 Every marker, Clear and Show/Hide PaTiLead can get its own key in WoW's key binding menu:
 
 **ESC > Key Bindings > PaTiLead** (German client: **ESC > Tastaturbelegung > PaTiLead**; some clients:
@@ -50,31 +74,15 @@ Each one is installed on its own and works on its own; none of them is needed by
 - [PaTiGroup](https://github.com/patpaskoch/PaTiGroup) – shows everyone the tank's target and its marker
 - [PaTiSuite](https://github.com/patpaskoch/PaTiSuite) – shows and hides this window together with the other PaTi windows
 
-## Installation
-
-![PaTiLead – three-step installation guide](assets/installation_en.svg)
-
-1. 📥 **Download** – Open [GitHub Releases](https://github.com/patpaskoch/PaTiLead/releases) and download the `PaTiLead-<version>.zip` file under **Assets** (not **Source code (zip)**).
-2. 📂 **Extract & Copy** – Right-click the ZIP, select **Extract All**, then copy the extracted `PaTiLead` folder into the WoW Forever client's `Interface/AddOns/` folder. No renaming is needed.
-3. ☑️ **Enable in Game** – Start WoW, open the **AddOns** menu at character selection, tick **PaTiLead**, and click **OK**.
-
-## First steps
-- Target an enemy, click a marker
-- `/plead settings` → marker order; the "Key bindings" section shows where to bind keys
-- `/plead test` shows example data
-
-## Settings
-`/plead settings` or ••• → Settings: pull buttons, group info, note, window lock, language, scale, marker
-order, and the **Key bindings** note with the menu path.
-- **Window:** panel opacity (30–100 %)
-
 ## Commands
+
 `/plead` or `/patilead` — alone or `toggle`: show/hide · `settings` · `test` · `show` · `hide` · `lock` · `unlock` ·
 `reset` (position) · `debug` · `version` · `about` · `changelog`
 
 The bar cannot be shown, hidden, collapsed or rearranged in combat (it has secure buttons).
 
 ## Known limitations
+
 - Markers, Reset All and key bindings are not yet tested in game since the rework.
 - Up to version 0.4 the old PaTiGroup created the macro `PaTiG_Reset`. It is no longer used or changed; you may
   delete it (`/plead debug` shows whether it still exists).
@@ -84,4 +92,5 @@ The bar cannot be shown, hidden, collapsed or rearranged in combat (it has secur
 Architecture, tests and engineering rules of the suite: [PaTiAdmin](https://github.com/patpaskoch/PaTiAdmin). PaTiAdmin is not a WoW addon — players do not install it. The shared UI code (PaTiShared) is already embedded in this addon's `Shared/` folder; there is nothing extra to install.
 
 ## License
+
 MIT — see [LICENSE](LICENSE). Copyright (c) 2026 Patrick Koch.
