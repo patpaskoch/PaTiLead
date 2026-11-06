@@ -51,9 +51,12 @@ Each one is installed on its own and works on its own; none of them is needed by
 - [PaTiSuite](https://github.com/patpaskoch/PaTiSuite) – shows and hides this window together with the other PaTi windows
 
 ## Installation
-1. Download the release zip (`PaTiLead-<version>.zip`).
-2. Unpack it and copy the folder `PaTiLead` into `World of Warcraft/<client>/Interface/AddOns/`.
-3. Start WoW and enable PaTiLead in the AddOns list.
+
+![PaTiLead – three-step installation guide](assets/installation_en.svg)
+
+1. 📥 **Download** – Open [GitHub Releases](https://github.com/patpaskoch/PaTiLead/releases) and download the `PaTiLead-<version>.zip` file under **Assets** (not **Source code (zip)**).
+2. 📂 **Extract & Copy** – Right-click the ZIP, select **Extract All**, then copy the extracted `PaTiLead` folder into the WoW Forever client's `Interface/AddOns/` folder. No renaming is needed.
+3. ☑️ **Enable in Game** – Start WoW, open the **AddOns** menu at character selection, tick **PaTiLead**, and click **OK**.
 
 ## First steps
 - Target an enemy, click a marker
