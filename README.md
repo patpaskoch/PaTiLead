@@ -4,10 +4,12 @@
 
 ## What is PaTiLead?
 
+> **Installation-test beta available:** [Download the current ZIP from Releases](https://github.com/patpaskoch/PaTiLead/releases). This is an unverified preview for testing the installation, not a stable release.
+
 Lead your group in World of Warcraft: Forever (Interface 16001): raid target markers, ready check and pull timer.
 You pick a target and click a marker — PaTiLead never marks, binds keys or creates macros by itself.
 
-> Status: in development, not yet released. Not yet tested in game since the rework.
+> Status: in development, not yet stable. Not yet tested in game since the rework.
 >
 > PaTiLead is the former **PaTiGroup** (renamed 2026-10-02, history kept). The name PaTiGroup now belongs to a new,
 > small party-awareness addon (who is tank, healer, what the tank targets). Settings of the old PaTiGroup are not
