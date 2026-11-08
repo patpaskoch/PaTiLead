@@ -23,7 +23,9 @@ zählt ab `PT-GROUP-200`.
 
 ## Installation / Laden
 
-- [ ] PT-LEAD-001 Fresh Install aus dem Release-ZIP: genau ein Ordner `PaTiLead/`, Addon lädt allein
+- [x] PT-LEAD-001 Fresh Install aus dem Release-ZIP: genau ein Ordner `PaTiLead/`, Addon lädt allein
+  - ✅ VERIFIED 2026-11-08
+  - Owner: installiert, lädt und funktioniert, kein Fehler.
 - [x] PT-LEAD-002 PaTiLead erscheint in der AddOn-Liste mit Beschreibung („Gruppe führen: …“)
   - ✅ VERIFIED 2026-11-08
   - Owner: steht mit Beschreibung in der AddOn-Liste.
