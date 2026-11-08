@@ -47,7 +47,9 @@ zählt ab `PT-GROUP-200`.
 
 - [ ] PT-LEAD-010 `/plead`, `/patilead` und `/plead toggle` blenden das Fenster ein und aus; `/plead show`, `/plead hide`
 - [ ] PT-LEAD-011 Fenster am Header verschieben (entsperrt)
-- [ ] PT-LEAD-012 Position bleibt nach `/reload`
+- [x] PT-LEAD-012 Position bleibt nach `/reload`
+  - ✅ VERIFIED 2026-11-08
+  - Owner: /patitest 2× grün in-game (vor und nach /reload, 42 ok, 0 Fehler; 7 PaTi-Addons installiert)
 - [ ] PT-LEAD-013 Lock/Unlock (••• und `/plead lock` / `unlock`): gesperrt nicht verschiebbar
 - [ ] PT-LEAD-014 Größe (Scale) wirkt
 - [ ] PT-LEAD-015 Einstellungen öffnen (`/plead settings` und •••) und speichern: Pull-Buttons, Gruppeninfo, Notiz,
