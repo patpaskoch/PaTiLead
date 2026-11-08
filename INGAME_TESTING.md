@@ -27,6 +27,7 @@ zählt ab `PT-GROUP-200`.
 - [ ] PT-LEAD-002 PaTiLead erscheint in der AddOn-Liste mit Beschreibung („Gruppe führen: …“)
 - [ ] PT-LEAD-003 Icon in der AddOn-Liste korrekt (Krone über der Gruppe mit Raidmarkern), keine weiße oder fehlende Textur
 - [ ] PT-LEAD-004 Login ohne Lua-Fehler
+  - Owner 2026-11-08 (Teilbefund): installiert, „funktionieren soweit tadellos“ — ob beim Login gar keine Lua-Fehlermeldung kam, noch offen.
 - [ ] PT-LEAD-005 `/reload` ohne Lua-Fehler
 - [ ] PT-LEAD-006 Erster Start nach der Umbenennung: Standard-Einstellungen (alte PaTiGroup-Einstellungen werden
   bewusst nicht übernommen), keine Fehlermeldung; alter Ordner `PaTiGroup/` vorher durch den neuen ersetzt
