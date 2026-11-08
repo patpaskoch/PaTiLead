@@ -35,6 +35,7 @@ History before this file: `git log`.
 - Collapse/Expand in the ••• menu: only the header stays; saved in PaTiLeadDB.collapsed (old saves: expanded).
   Disabled in combat (the bar holds secure buttons). Restore Defaults expands the bar.
 ### Fixed
+- Hardening: a damaged marker list (duplicates, out-of-range or non-numeric entries) or a non-text note in SavedVariables is replaced instead of reaching the bar buttons (audit 2026-11-08).
 - "Reset All" left the last marker (skull) on you when you had none before — or moved the target's marker to you
   (owner 2026-10-06). A single click cannot fix this (the client drops the final "/tm [@player] 0" while it still
   thinks you are unmarked); the button now reads "Click again" until your own marker is gone. Label only, out of

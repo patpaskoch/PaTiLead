@@ -31,6 +31,22 @@ local function copy(list)
     return result
 end
 
+-- A usable marker list: exactly SLOTS entries, each 0 (empty) or a whole raid target index 1-8, none twice.
+-- Anything else (a hand-edited or damaged save) would reach the secure attributes of the bar buttons.
+function Logic.ValidMarkers(markers)
+    if type(markers) ~= "table" or #markers ~= Logic.SLOTS then return false end
+    local seen = {}
+    for slot = 1, Logic.SLOTS do
+        local value = markers[slot]
+        if type(value) ~= "number" or value < 0 or value > 8 or value ~= math.floor(value) then return false end
+        if value > 0 then
+            if seen[value] then return false end
+            seen[value] = true
+        end
+    end
+    return true
+end
+
 -- Fills missing values, keeps existing ones (also false). A broken marker list is replaced by the default.
 function Logic.Migrate(db)
     if type(db) ~= "table" then db = {} end -- nil or a broken save (string, number …): start fresh
@@ -42,7 +58,8 @@ function Logic.Migrate(db)
     -- The PaTiShared themes (Soft Fantasy since 2026-10-19); a typo or an old value falls back to the default look.
     local knownTheme = { default = true, woforever = true, dracula = true, softfantasy = true }
     if not knownTheme[db.theme] then db.theme = "default" end
-    if type(db.markers) ~= "table" or #db.markers ~= Logic.SLOTS then db.markers = copy(Logic.DEFAULT_MARKERS) end
+    if not Logic.ValidMarkers(db.markers) then db.markers = copy(Logic.DEFAULT_MARKERS) end
+    if type(db.note) ~= "string" then db.note = "" end
     db.schema = Logic.SCHEMA
     return db
 end
@@ -88,8 +105,8 @@ end
 
 -- Clamps and trims the local note.
 function Logic.CleanNote(text)
-    text = (text or ""):gsub("[\r\n]", " ")
-    return text:sub(1, Logic.NOTE_MAX)
+    if type(text) ~= "string" then return "" end
+    return (text:gsub("[\r\n]", " "):sub(1, Logic.NOTE_MAX))
 end
 
 -- Secret-value rule (AGENTS.md §8): check readability FIRST, compare or test only afterwards.
