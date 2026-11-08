@@ -24,13 +24,22 @@ zählt ab `PT-GROUP-200`.
 ## Installation / Laden
 
 - [ ] PT-LEAD-001 Fresh Install aus dem Release-ZIP: genau ein Ordner `PaTiLead/`, Addon lädt allein
-- [ ] PT-LEAD-002 PaTiLead erscheint in der AddOn-Liste mit Beschreibung („Gruppe führen: …“)
-- [ ] PT-LEAD-003 Icon in der AddOn-Liste korrekt (Krone über der Gruppe mit Raidmarkern), keine weiße oder fehlende Textur
-- [ ] PT-LEAD-004 Login ohne Lua-Fehler
-  - Owner 2026-11-08 (Teilbefund): installiert, „funktionieren soweit tadellos“ — ob beim Login gar keine Lua-Fehlermeldung kam, noch offen.
-- [ ] PT-LEAD-005 `/reload` ohne Lua-Fehler
-- [ ] PT-LEAD-006 Erster Start nach der Umbenennung: Standard-Einstellungen (alte PaTiGroup-Einstellungen werden
+- [x] PT-LEAD-002 PaTiLead erscheint in der AddOn-Liste mit Beschreibung („Gruppe führen: …“)
+  - ✅ VERIFIED 2026-11-08
+  - Owner: steht mit Beschreibung in der AddOn-Liste.
+- [x] PT-LEAD-003 Icon in der AddOn-Liste korrekt (Krone über der Gruppe mit Raidmarkern), keine weiße oder fehlende Textur
+  - ✅ VERIFIED 2026-11-08
+  - Owner: Kronen-Icon in der AddOn-Liste korrekt.
+- [x] PT-LEAD-004 Login ohne Lua-Fehler
+  - ✅ VERIFIED 2026-11-08
+  - Owner: Login ohne Lua-Fehler.
+- [x] PT-LEAD-005 `/reload` ohne Lua-Fehler
+  - ✅ VERIFIED 2026-11-08
+  - Owner: `/reload` ohne Lua-Fehler.
+- [x] PT-LEAD-006 Erster Start nach der Umbenennung: Standard-Einstellungen (alte PaTiGroup-Einstellungen werden
   bewusst nicht übernommen), keine Fehlermeldung; alter Ordner `PaTiGroup/` vorher durch den neuen ersetzt
+  - ✅ VERIFIED 2026-11-08
+  - Owner: erster Start mit Standard-Einstellungen, keine Fehlermeldung; alter Ordner `PaTiGroup/` ersetzt.
 
 ## Fenster
 
