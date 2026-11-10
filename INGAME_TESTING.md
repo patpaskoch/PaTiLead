@@ -62,7 +62,9 @@ zählt ab `PT-GROUP-200`.
 ## SavedVariables
 
 - [ ] PT-LEAD-030 Einstellungen und Notiz bleiben nach `/reload` (`PaTiLeadDB`)
-- [ ] PT-LEAD-031 Einstellungen bleiben nach Relog
+- [x] PT-LEAD-031 Einstellungen bleiben nach Relog
+  - ✅ VERIFIED 2026-11-10
+  - Owner: 5 Spielsitzungen mit wiederholtem Einloggen, keine Auffälligkeiten
 - [ ] PT-LEAD-033 „Standard wiederherstellen“ setzt die Einstellungen zurück, Notiz bleibt
 
 ## Sprachen
@@ -122,7 +124,9 @@ zählt ab `PT-GROUP-200`.
 
 ## Combat / Sicherheit
 
-- [ ] PT-LEAD-090 Kein Lua-Fehler im Kampf
+- [x] PT-LEAD-090 Kein Lua-Fehler im Kampf
+  - ✅ VERIFIED 2026-11-10
+  - Owner: 3 Stunden gespielt inkl. Kampf, kein Lua-Fehler (PaTiTest sessionErrors 2026-11-10 19:40–23:01 leer)
 - [ ] PT-LEAD-091 Keine `ADDON_ACTION_BLOCKED` / `ADDON_ACTION_FORBIDDEN`
   - ❌ FAIL 2026-10-03
   - Owner sah im Kampf „Interface-Aktion auf Grund eines Addons fehlgeschlagen“ (Addon nicht genannt). `taint.log`
