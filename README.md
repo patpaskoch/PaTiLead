@@ -19,6 +19,7 @@ Great groups run on clear signals. PaTiLead puts raid markers, ready checks and 
 - **Mark your targets:** Place or clear raid markers with a click.
 - **Ready when you are:** Start a ready check before the pull.
 - **Countdown together:** Choose a three-, five- or ten-second pull timer.
+- **Call for crowd control:** "Sheep" marks your enemy target and asks the group in chat; "Re-sheep" reminds them.
 - **Keep the plan visible:** See the target, leader, assistants and role counts.
 - **Make it yours:** Choose your markers, shortcuts and a compact layout.
 
@@ -40,8 +41,8 @@ Great groups run on clear signals. PaTiLead puts raid markers, ready checks and 
 
 ## Settings
 
-`/plead settings` or ••• → Settings: pull buttons, group info, note, window lock, language, scale, marker
-order, and the **Key bindings** note with the menu path.
+`/plead settings` or ••• → Settings: pull buttons, group info, note, window lock, language, scale, sheep
+buttons and their marker, marker order, and the **Key bindings** note with the menu path.
 - **Window:** panel opacity (30–100 %)
 
 ## Important notes

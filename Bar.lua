@@ -136,6 +136,33 @@ function Bar.PaintResetHint(testMode)
     UI.BindText(reset.label, resetAgain and "RESET_AGAIN" or "RESET_ALL")
 end
 
+-- Sheep buttons (owner 2026-11-18): crowd control is asked for, never cast. "Sheep" marks your enemy target with the
+-- chosen marker (secure /tm macro, only on a living enemy) and asks the group in chat; "Re-sheep" is only the chat
+-- reminder (no target, nothing marked). The chat line is sent by PaTiLead.lua (Bar.onSheepCall) in the same click.
+Bar.sheepMarker = Logic.DEFAULTS.sheepMarker
+local function sheepLabel(key)
+    return function() return ("|T%s:14|t %s"):format(Bar.MarkerTexture(Bar.sheepMarker), L[key]) end
+end
+local sheep = CreateFrame("Button", "PaTiLeadSheep", window, "SecureActionButtonTemplate,BackdropTemplate")
+UI.StyleButton(sheep, sheepLabel("SHEEP"))
+sheep:RegisterForClicks("AnyUp", "AnyDown")
+sheep:SetAttribute("type", "macro")
+sheep:SetAttribute("macrotext", Logic.SheepMacroText(Bar.sheepMarker))
+UI.SetTooltip(sheep, function() return { L.SHEEP, L.SHEEP_TIP:format(Bar.MarkerName(Bar.sheepMarker)) } end)
+-- Registered for down and up: the hook runs twice per click, only the first sends (see Reset All above).
+local sheepAt = 0
+sheep:HookScript("OnClick", function()
+    local now = GetTime()
+    if now - sheepAt < CLICK_GAP then return end
+    sheepAt = now
+    if Bar.onSheepCall then Bar.onSheepCall("SHEEP") end
+end)
+Bar.sheep = sheep
+Bar.resheep = UI.CreateButton(window, sheepLabel("RESHEEP"), nil, function()
+    if Bar.onSheepCall then Bar.onSheepCall("RESHEEP") end
+end)
+UI.SetTooltip(Bar.resheep, function() return { L.RESHEEP, L.RESHEEP_TIP } end)
+
 Bar.pulls = {}
 for index, seconds in ipairs(PULL_SECONDS) do
     local pull = UI.CreateButton(window, function() return L.PULL:format(seconds) end, 64, function()
@@ -186,6 +213,8 @@ function Bar.Layout(db, testMode)
         targetIcon:Hide()
         for _, button in pairs(Bar.markerButtons) do button:Hide() end
         for _, pull in ipairs(Bar.pulls) do pull:Hide() end
+        sheep:Hide()
+        Bar.resheep:Hide()
         leaderLine:Hide()
         rolesLine:Hide()
         note:Hide()
@@ -219,6 +248,20 @@ function Bar.Layout(db, testMode)
     reset:ClearAllPoints()
     reset:SetPoint("LEFT", Bar.readyCheck, "RIGHT", GAP, 0)
     y = y + UI.Sizes.ButtonHeight + UI.Spacing.SM
+
+    sheep:SetShown(db.showSheep)
+    Bar.resheep:SetShown(db.showSheep)
+    if db.showSheep then
+        Bar.sheepMarker = db.sheepMarker
+        sheep:SetAttribute("macrotext", Logic.SheepMacroText(db.sheepMarker))
+        UI.BindText(sheep.label, sheepLabel("SHEEP")) -- the marker icon may have changed
+        UI.BindText(Bar.resheep.label, sheepLabel("RESHEEP"))
+        sheep:SetEnabled(not testMode)
+        place(sheep, PAD)
+        Bar.resheep:ClearAllPoints()
+        Bar.resheep:SetPoint("LEFT", sheep, "RIGHT", GAP, 0)
+        y = y + UI.Sizes.ButtonHeight + UI.Spacing.SM
+    end
 
     for index, pull in ipairs(Bar.pulls) do
         pull:SetShown(db.showPull)

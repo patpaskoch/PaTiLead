@@ -28,6 +28,29 @@ end
 
 Bar.onNoteChanged = function(text) if DB then DB.note = text end end
 
+-- Sheep buttons (owner 2026-11-18): one click = one chat line to the group, nothing on its own. "SHEEP" needs a
+-- living enemy target (its name is added when readable), "RESHEEP" only names the marker. Test mode only prints.
+local lastCall
+Bar.onSheepCall = function(kind)
+    if not DB then return end
+    local name
+    if kind == "SHEEP" and not testMode then
+        local enemy = Logic.Flag(UnitExists("target"), isSecret) and Logic.Flag(UnitCanAttack("player", "target"), isSecret)
+            and not Logic.Flag(UnitIsDead("target"), isSecret)
+        if not enemy then say("SHEEP_NO_ENEMY"); return end
+        name = Logic.Readable(UnitName("target"), isSecret)
+    end
+    local text = Logic.SheepText(kind == "SHEEP" and L.SHEEP_TEXT or L.RESHEEP_TEXT, DB.sheepMarker, name)
+    if testMode then say("SHEEP_TEST", text); return end
+    local channel = Logic.ChatChannel({ inGroup = IsInGroup ~= nil and Logic.Flag(IsInGroup(), isSecret),
+        inRaid = IsInRaid ~= nil and Logic.Flag(IsInRaid(), isSecret) })
+    if not channel then say("SHEEP_NO_GROUP"); return end
+    if not Logic.CallReady(GetTime(), lastCall) or not SendChatMessage then return end
+    local ok, err = pcall(SendChatMessage, text, channel)
+    if not ok then Bar.lastError = tostring(err):sub(1, 120); return end -- /plead debug
+    lastCall = GetTime()
+end
+
 -- Key bindings (Bindings.xml): names shown in WoW's key binding menu. Nothing is bound automatically.
 local G = _G
 G.BINDING_HEADER_PATILEAD = "PaTiLead"
@@ -119,6 +142,17 @@ local function buildSettings()
             if not InCombatLockdown() then window:SetScale(scale) else layoutPending = true end
         end,
     }))
+    modal:AddSection("SHEEP_SECTION")
+    modal:AddControls(box("SHOW_SHEEP", "showSheep"))
+    modal:AddRow("SHEEP_MARKER", UI.CreateDropdown(modal, 170, {
+        items = function()
+            local items = markerItems()
+            table.remove(items, 1) -- no "Empty": the button always marks with something
+            return items
+        end,
+        get = function() return DB.sheepMarker end,
+        set = function(marker) DB.sheepMarker = marker; relayout() end,
+    }))
     -- Key bindings live in the WoW key binding menu (Bindings.xml); PaTiLead never binds a key itself.
     modal:AddSection("KEYBIND_SECTION")
     modal:AddNote("KEYBIND_TITLE", "KEYBIND_PATH", "KEYBIND_TEXT", 4)
@@ -171,10 +205,11 @@ local function printDebug()
             tostring(Logic.Readable(UnitIsGroupLeader("player"), isSecret)),
             tostring(Logic.Readable(UnitIsGroupAssistant("player"), isSecret)),
             InCombatLockdown() and "yes" or "no", testMode and "on" or "off", layoutPending and "yes" or "no"),
+        ("Sheep buttons %s · marker %d"):format(DB.showSheep and "on" or "off", DB.sheepMarker),
         ("Markers on bar: %s · key bindings: %s"):format(table.concat(Logic.VisibleMarkers(DB.markers), ","),
             #keys > 0 and table.concat(keys, ", ") or "none"),
         ("Old macro PaTiG_Reset: %s"):format(oldMacro > 0 and "present, unused since 0.5 (you may delete it)" or "not present"),
-        ("Last caught error (ready check / countdown): %s"):format(Bar.lastError or "none"),
+        ("Last caught error (ready check / countdown / sheep chat): %s"):format(Bar.lastError or "none"),
     }) do print("  " .. line) end
 end
 
