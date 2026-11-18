@@ -101,6 +101,23 @@ zählt ab `PT-GROUP-200`.
 - [ ] PT-LEAD-065 Ohne Gruppe, ohne Leitung/Assistent oder im Kampf: Klick auf Ready Check/Pull tut nichts
 - [ ] PT-LEAD-066 Pull-Buttons in den Einstellungen ausblendbar
 
+## Schafen (2026-11-18)
+
+- [ ] PT-LEAD-104 Unter Ready Check/Reset: Knöpfe „{Mond} Schafen“ und „{Mond} Nachschafen“; Tooltips erklären sie;
+  nichts überlappt (Deutsch und Englisch)
+- [ ] PT-LEAD-105 Lebender Gegner im Ziel, in der Gruppe: „Schafen“ setzt den Mond auf ihn, im Gruppenchat steht
+  „Bitte schafen: {Mond} Name“ (Mond als Bild); zaubert nichts
+- [ ] PT-LEAD-106 Gegner hat schon den Mond: „Schafen“ nochmal → Mond bleibt (geht er weg, bitte melden)
+- [ ] PT-LEAD-107 Freundliches, totes oder kein Ziel: „Schafen“ markiert nichts, kein Chat, nur der Hinweis
+  „zuerst einen lebenden Gegner anvisieren“ in deinem Chat
+- [ ] PT-LEAD-108 „Nachschafen“ mit beliebigem oder keinem Ziel: Gruppenchat „Bitte nachschafen: {Mond}“, nichts wird
+  markiert; schneller Doppelklick schickt nur eine Zeile
+- [ ] PT-LEAD-109 Im Kampf: beide Knöpfe gehen, kein Lua-Fehler, kein `ADDON_ACTION_BLOCKED`
+- [ ] PT-LEAD-110 Solo: Hinweis „du bist in keiner Gruppe, nichts gesendet“; `/plead test`: „Schafen“ ausgegraut,
+  „Nachschafen“ schreibt nur in deinen Chat („Testmodus, nichts gesendet“)
+- [ ] PT-LEAD-111 Einstellungen → Schafen: anderes Symbol (z. B. Raute) → Knöpfe zeigen es, „Schafen“ setzt es, Chat
+  nennt es; „Schaf-Knöpfe“ aus → beide weg, Fenster ohne Lücke; bleibt nach `/reload`
+
 ## Rollen / Leader / Assist
 
 - [ ] PT-LEAD-070 Aktuelles Ziel mit seinem Marker wird angezeigt

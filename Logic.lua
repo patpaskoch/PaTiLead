@@ -23,7 +23,11 @@ Logic.DEFAULTS = {
     showGroupInfo = true,
     showNote = true,
     note = "",
+    showSheep = true, -- "Sheep" / "Re-sheep" buttons (owner 2026-11-18)
+    sheepMarker = 5, -- raid target index the "Sheep" button sets (5 = Moon)
 }
+
+Logic.CALL_COOLDOWN = 1.5 -- s between two chat calls of the sheep buttons (no spam on double clicks)
 
 local function copy(list)
     local result = {}
@@ -60,6 +64,11 @@ function Logic.Migrate(db)
     if not knownTheme[db.theme] then db.theme = "default" end
     if not Logic.ValidMarkers(db.markers) then db.markers = copy(Logic.DEFAULT_MARKERS) end
     if type(db.note) ~= "string" then db.note = "" end
+    -- The sheep marker reaches a secure macro: only a whole raid target index 1-8 is kept.
+    local sheep = db.sheepMarker
+    if type(sheep) ~= "number" or sheep < 1 or sheep > 8 or sheep ~= math.floor(sheep) then
+        db.sheepMarker = Logic.DEFAULTS.sheepMarker
+    end
     db.schema = Logic.SCHEMA
     return db
 end
@@ -101,6 +110,31 @@ function Logic.ResetMacroText()
     for index = 1, 8 do lines[#lines + 1] = "/tm [@player] " .. index end
     lines[#lines + 1] = "/tm [@player] 0"
     return table.concat(lines, "\n")
+end
+
+-- "Sheep" button (owner 2026-11-18): marks your target with the chosen marker, only if it is a living enemy (the
+-- macro condition; nothing happens on a friend). Secure macrotext, set out of combat like the other attributes.
+function Logic.SheepMacroText(marker)
+    return ("/tm [@target,harm,nodead] %d"):format(marker)
+end
+
+-- Chat channel for the sheep calls: raid, party or nil (solo: nothing is sent).
+function Logic.ChatChannel(state)
+    if state.inRaid then return "RAID" end
+    if state.inGroup then return "PARTY" end
+    return nil
+end
+
+function Logic.CallReady(now, lastSent)
+    return lastSent == nil or now - lastSent >= Logic.CALL_COOLDOWN
+end
+
+-- One chat line: template "Please sheep: %s" + the marker as chat icon ({rt5} shows as the moon for everyone, in every
+-- language) + the enemy name when readable. name must already be checked (never a secret value).
+function Logic.SheepText(template, marker, name)
+    local target = ("{rt%d}"):format(marker)
+    if type(name) == "string" and name ~= "" then target = target .. " " .. name end
+    return template:format(target)
 end
 
 -- Clamps and trims the local note.

@@ -9,9 +9,11 @@ Addon facts: `../../PaTiAdmin/docs/ARCHITECTURE.md` · open issues: `../../PaTiA
   belongs to the party-awareness addon. Do not add awareness features here, do not add lead actions there.)
 - Files: `Logic.lua` (settings, marker order, reset text — pure, tested) · `Bar.lua` (window, secure buttons, layout, paint) ·
   `PaTiLead.lua` (settings, commands, bindings names, events) · `Bindings.xml` · `Locales/` · `Shared/` (synced, never edit).
-- SavedVariables: `PaTiLeadDB` (per character), schema 1 — see `Logic.DEFAULTS`, `markers` = 8 slots (raid target index or 0), `note`.
+- SavedVariables: `PaTiLeadDB` (per character), schema 1 — see `Logic.DEFAULTS`, `markers` = 8 slots (raid target index or 0), `note`,
+  `showSheep`, `sheepMarker` (1-8).
 - Secure: `PaTiLeadMarker1..8`, `PaTiLeadClear` (type raidtarget, action set, marker 0 = clear), `PaTiLeadReset`
-  (type macro, macrotext /tm), binding buttons `PaTiLeadBindMarker1..8`, `PaTiLeadBindClear`
+  (type macro, macrotext /tm), `PaTiLeadSheep` (type macro, `/tm [@target,harm,nodead] <marker>`; the chat line
+  goes out in its OnClick hook, owner 2026-11-18), binding buttons `PaTiLeadBindMarker1..8`, `PaTiLeadBindClear`
   (keep these names: players' key bindings point at them). Layout/attributes only out of combat (`Bar.Layout`).
 - Never: call SetRaidTarget from Lua, bind keys, call SaveBindings, create or edit macros, mark automatically.
 - Slash: `/plead`, `/patilead`.
